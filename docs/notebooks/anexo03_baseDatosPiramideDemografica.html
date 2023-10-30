@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Análisis sistemático de datos con R. Indicadores de calidad del dato - Anexo 03 - Cómo fabricar la base de ejemplo para pirámides demográficas</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../notebooks/anexo02_funciones.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://hypothes.is/embed.js"></script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/dataQuality.html">Anexos</a></li><li class="breadcrumb-item"><a href="../notebooks/anexo03_baseDatosPiramideDemografica.html">Anexo 03 - Cómo fabricar la base de ejemplo para pirámides demográficas</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Análisis sistemático de datos con R. Indicadores de calidad del dato</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://gitlab.com/calidada4sms/publico/seca2023_tallerR" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-git"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Análisis-sistemático-de-datos-con-R.-Indicadores-de-calidad-del-dato.pdf">
+              <i class="bi bi-bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Análisis-sistemático-de-datos-con-R.-Indicadores-de-calidad-del-dato.epub">
+              <i class="bi bi-bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-1" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-1">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">¡Bienvenidos!</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">BLOQUE 0 - Descripción del taller</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/0a_contenidoTaller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Contenido del taller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/0b_licenciaMaterial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Licencia del material</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/0c_sinMiedoCodigo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">¿Quién dijo miedo a programar?</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">BLOQUE 1 - Instalación</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/1a_preparacionSistema.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preparación del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/1b_instalacionR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paso 1 - Instalar R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/1c_instalacionRstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paso 2 - Instalación de R Studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/1d_instalacionPaquetes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paso 3 - Instalación de los paquetes adicionales de R utilizados en el taller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/1e_descargaMaterial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paso 4 - Descarga de los datos del taller</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">BLOQUE 2 - Fundamentos de R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2a_R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">El lenguaje <code>R</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2b_calculadoraR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">R como calculadora</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2c_scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><em>Scripts</em> de R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2d_tiposDatos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tipos de datos en R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2e_vectores.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vectores</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2f_cambioTipoVariable.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cambio del Tipo de Variable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2g_flujo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Flujo del código</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2h_funciones.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Funciones</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2i_dataframes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><strong>data.frame</strong></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2j_factores.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">La navaja suiza de R: transformación a factores</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2k_graficos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Gráficos con ggplot2</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">BLOQUE 3 - Casos de uso</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/3a_piramideDemografica.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A - Pirámides demográficas</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/ejercicios.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ejercicios</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Anexos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/dataQuality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calidad del análisis de datos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/anexo01_paquetes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo 01 - Paquetes utilizados en el taller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/anexo02_funciones.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo 02 - Funciones utilizadas en los capítulos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/anexo03_baseDatosPiramideDemografica.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Anexo 03 - Cómo fabricar la base de ejemplo para pirámides demográficas</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#fase-1---ingerir-los-datos-crudos" id="toc-fase-1---ingerir-los-datos-crudos" class="nav-link active" data-scroll-target="#fase-1---ingerir-los-datos-crudos">Fase 1 - Ingerir los datos crudos</a></li>
+  <li><a href="#fase-2---explorar-los-datos" id="toc-fase-2---explorar-los-datos" class="nav-link" data-scroll-target="#fase-2---explorar-los-datos">Fase 2 - Explorar los datos</a></li>
+  <li><a href="#fase-3---limpieza-de-los-datos" id="toc-fase-3---limpieza-de-los-datos" class="nav-link" data-scroll-target="#fase-3---limpieza-de-los-datos">Fase 3 - Limpieza de los datos</a>
+  <ul class="collapse">
+  <li><a href="#normalización-del-nombre-de-las-variables" id="toc-normalización-del-nombre-de-las-variables" class="nav-link" data-scroll-target="#normalización-del-nombre-de-las-variables">Normalización del nombre de las variables</a></li>
+  <li><a href="#eliminación-de-datos-que-no-interesan" id="toc-eliminación-de-datos-que-no-interesan" class="nav-link" data-scroll-target="#eliminación-de-datos-que-no-interesan">Eliminación de datos que no interesan</a></li>
+  <li><a href="#transformación-de-datos-tipo-character-a-numeric" id="toc-transformación-de-datos-tipo-character-a-numeric" class="nav-link" data-scroll-target="#transformación-de-datos-tipo-character-a-numeric">Transformación de datos tipo <strong>character</strong> a <strong>numeric</strong></a></li>
+  </ul></li>
+  <li><a href="#fase-4---transformación-de-los-datos-para-el-análisis" id="toc-fase-4---transformación-de-los-datos-para-el-análisis" class="nav-link" data-scroll-target="#fase-4---transformación-de-los-datos-para-el-análisis">Fase 4 - Transformación de los datos para el análisis</a>
+  <ul class="collapse">
+  <li><a href="#transformación-de-la-variable-sexo-en-factor" id="toc-transformación-de-la-variable-sexo-en-factor" class="nav-link" data-scroll-target="#transformación-de-la-variable-sexo-en-factor">Transformación de la variable <code>sexo</code> en factor</a></li>
+  <li><a href="#transformacion-de-variables-character-a-factor" id="toc-transformacion-de-variables-character-a-factor" class="nav-link" data-scroll-target="#transformacion-de-variables-character-a-factor">Transformacion de variables <strong>character</strong> a <strong>factor</strong></a></li>
+  <li><a href="#transformacion-de-la-variable-periodo-en-factor" id="toc-transformacion-de-la-variable-periodo-en-factor" class="nav-link" data-scroll-target="#transformacion-de-la-variable-periodo-en-factor">Transformacion de la variable <code>periodo</code> en factor</a></li>
+  <li><a href="#renivelado-de-factores" id="toc-renivelado-de-factores" class="nav-link" data-scroll-target="#renivelado-de-factores">Renivelado de factores</a></li>
+  <li><a href="#exportamos-los-datos" id="toc-exportamos-los-datos" class="nav-link" data-scroll-target="#exportamos-los-datos">Exportamos los datos</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Anexo 03 - Cómo fabricar la base de ejemplo para pirámides demográficas</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="fase-1---ingerir-los-datos-crudos" class="level2">
+<h2 class="anchored" data-anchor-id="fase-1---ingerir-los-datos-crudos">Fase 1 - Ingerir los datos crudos</h2>
+<p>Importamos la tabla de datos (ya descargada en el material).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> rio<span class="sc">::</span><span class="fu">import</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'data'</span>, <span class="st">'raw'</span>, <span class="st">'poblacionResidente_xFecha-Sexo-GrupoEdad-Nacionalidad.csv'</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="fase-2---explorar-los-datos" class="level2">
+<h2 class="anchored" data-anchor-id="fase-2---explorar-los-datos">Fase 2 - Explorar los datos</h2>
+<p>La exploración de los datos se puede hacer con las siguientes funciones:</p>
+<table class="table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 20%">
+<col style="width: 62%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Paquete</th>
+<th>Función</th>
+<th>Acciones</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>base</strong></td>
+<td><code>str()</code></td>
+<td>Muestra la estructura de un objeto de R</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>summary()</code></td>
+<td>Resume el contenido de un objeto</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>head()</code><br><code>tail()</code></td>
+<td>Muestra las primeras y últimas porciones de un objeto</td>
+</tr>
+<tr class="even">
+<td><strong>Hmisc</strong></td>
+<td><code>describe()</code></td>
+<td>Mejora el formato de salida de las funciones del paquete <strong>base</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>DataExplorer</strong></td>
+<td><code>create_report()</code></td>
+<td>Crea un informe de exploración de datos para un dataset</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled" title="BÁSICO - Explorar con paquete 'base': `str()`, `summary()`, `head()` y `tail()`">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+BÁSICO - Explorar con paquete ‘base’: <code>str()</code>, <code>summary()</code>, <code>head()</code> y <code>tail()</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estructura del dataframe</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   332640 obs. of  5 variables:
+ $ Nacionalidad            : chr  "Total" "Total" "Total" "Total" ...
+ $ Grupo quinquenal de edad: chr  "Todas las edades" "Todas las edades" "Todas las edades" "Todas las edades" ...
+ $ Sexo                    : chr  "Total" "Total" "Total" "Total" ...
+ $ Periodo                 : chr  "1 de enero de 2021" "1 de octubre de 2020" "1 de julio de 2020" "1 de abril de 2020" ...
+ $ Total                   : chr  "47.400.798" "" "47.344.852" "" ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Resumen descriptivo de los valores</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Nacionalidad       Grupo quinquenal de edad     Sexo          
+ Length:332640      Length:332640            Length:332640     
+ Class :character   Class :character         Class :character  
+ Mode  :character   Mode  :character         Mode  :character  
+   Periodo             Total          
+ Length:332640      Length:332640     
+ Class :character   Class :character  
+ Mode  :character   Mode  :character  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Primeros y últimos valores del dataframe</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Nacionalidad Grupo quinquenal de edad  Sexo              Periodo      Total
+1        Total         Todas las edades Total   1 de enero de 2021 47.400.798
+2        Total         Todas las edades Total 1 de octubre de 2020           
+3        Total         Todas las edades Total   1 de julio de 2020 47.344.852
+4        Total         Todas las edades Total   1 de abril de 2020           
+5        Total         Todas las edades Total   1 de enero de 2020 47.318.050
+6        Total         Todas las edades Total 1 de octubre de 2019           </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Nacionalidad Grupo quinquenal de edad    Sexo              Periodo Total
+332635   Extranjera            90 y más años Mujeres   1 de abril de 2003      
+332636   Extranjera            90 y más años Mujeres   1 de enero de 2003 1.615
+332637   Extranjera            90 y más años Mujeres 1 de octubre de 2002      
+332638   Extranjera            90 y más años Mujeres   1 de julio de 2002 1.486
+332639   Extranjera            90 y más años Mujeres   1 de abril de 2002      
+332640   Extranjera            90 y más años Mujeres   1 de enero de 2002 1.357</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="AVANZADO - Exploración con paquete 'Hmisc': `Hmisc::describe()`">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+AVANZADO - Exploración con paquete ‘Hmisc’: <code>Hmisc::describe()</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Podemos obtener una información más estructurada con la función <code>describe()</code> del paquete <strong>Hmisc</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Hmisc<span class="sc">::</span><span class="fu">describe</span>(datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>datos 
+
+ 5  Variables      332640  Observations
+--------------------------------------------------------------------------------
+Nacionalidad 
+       n  missing distinct 
+  332640        0       72 
+
+lowest : Alemania   Apátridas  Argelia    Argentina  Bangladesh
+highest: Suiza      Total      Ucrania    Uruguay    Venezuela 
+--------------------------------------------------------------------------------
+Grupo quinquenal de edad 
+       n  missing distinct 
+  332640        0       20 
+
+lowest : 90 y más años    De 0 a 4 años    De 10 a 14 años  De 15 a 19 años  De 20 a 24 años 
+highest: De 70 a 74 años  De 75 a 79 años  De 80 a 84 años  De 85 a 89 años  Todas las edades
+--------------------------------------------------------------------------------
+Sexo 
+       n  missing distinct 
+  332640        0        3 
+                                  
+Value      Hombres Mujeres   Total
+Frequency   110880  110880  110880
+Proportion   0.333   0.333   0.333
+--------------------------------------------------------------------------------
+Periodo 
+       n  missing distinct 
+  332640        0       77 
+
+lowest : 1 de abril de 2002   1 de abril de 2003   1 de abril de 2004   1 de abril de 2005   1 de abril de 2006  
+highest: 1 de octubre de 2016 1 de octubre de 2017 1 de octubre de 2018 1 de octubre de 2019 1 de octubre de 2020
+--------------------------------------------------------------------------------
+Total 
+       n  missing distinct 
+  165720   166920    32360 
+
+lowest : ..        0         1         1.000     1.000.137
+highest: 998       998.133   998.375   999       999.896  
+--------------------------------------------------------------------------------</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="EXPERTO - Exploración con paquete 'DataExplorer': `DataExplorer::create_report()`">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+EXPERTO - Exploración con paquete ‘DataExplorer’: <code>DataExplorer::create_report()</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>La función <code>create_report()</code> del paquete <strong>DataExplorer</strong> crea un informe avanzado para un dataset, que incluye: clases de variables, análisis de datos faltantes, correlación, o análisis de componentes principales, entre otros elementos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>DataExplorer<span class="sc">::</span><span class="fu">create_report</span>(datos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fase-3---limpieza-de-los-datos" class="level2">
+<h2 class="anchored" data-anchor-id="fase-3---limpieza-de-los-datos">Fase 3 - Limpieza de los datos</h2>
+<p>Para la limpieza de los datos se pueden utilizar las siguientes funciones:</p>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 67%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Paquete</th>
+<th>Función</th>
+<th>Acciones</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>janitor</strong></td>
+<td><code>clean_names()</code></td>
+<td>Limpia los nombres de un objeto (habitualmente, un data.frame</td>
+</tr>
+</tbody>
+</table>
+<section id="normalización-del-nombre-de-las-variables" class="level3">
+<h3 class="anchored" data-anchor-id="normalización-del-nombre-de-las-variables">Normalización del nombre de las variables</h3>
+<div class="callout callout-style-default callout-tip callout-titled" title="BÁSICO - Normalizar el nombre de las variables con la función `janitor::clean_names()`">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+BÁSICO - Normalizar el nombre de las variables con la función <code>janitor::clean_names()</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>El paquete <strong>janitor</strong> tiene un conjunto de funciones muy útiles para muchos usos. Una de las más utilizadas es <code>clean_names()</code>, que permite convertir los nombres de las variables a un formato más amable para la computación.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>datosPiramide <span class="ot">&lt;-</span> datos <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="eliminación-de-datos-que-no-interesan" class="level3">
+<h3 class="anchored" data-anchor-id="eliminación-de-datos-que-no-interesan">Eliminación de datos que no interesan</h3>
+<p>Vamos a eliminar de los datos crudos los siguientes elementos:</p>
+<ul>
+<li>Filas que no contienen datos en la variable <code>total</code></li>
+<li>Filas en las existe un valor ‘..’ en la variable <code>total</code></li>
+<li>Filas en las que la variable <code>nacionalidad</code> tiene el valor ‘<em>Total</em>’</li>
+<li>Filas en las que la variable <code>grupo_quinquenal_de_edad</code> tiene el valor ‘<em>Todas las edades</em>’</li>
+<li>Filas en las que la variable <code>sexo</code> tiene el valor ‘<em>Total</em>’</li>
+<li>Filas en las que la variable <code>nacionalidad</code> contiene el valor de un país individual, a excepción de el valor <code>España</code>.</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="BÁSICO - Filtrar observaciones utilizando `dplyr::filter()`">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+BÁSICO - Filtrar observaciones utilizando <code>dplyr::filter()</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>El método más eficiente para filtrar es combinar todos los filtros dentro de la función <code>dplyr::filter()</code>. Habitualmente es el que más se utiliza, pero para comprenderlo a veces es necesario haber practicado previamente los dos métodos que están incluidos en la nota precedente. El resultado es el mismo que obtendríamos con cualquiera de los otros métodos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Eliminación de los datos datos que no interesan</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>datosPiramide <span class="ot">&lt;-</span> datosPiramide <span class="sc">|&gt;</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    total <span class="sc">!=</span> <span class="st">''</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    total <span class="sc">!=</span> <span class="st">'..'</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    grupo_quinquenal_de_edad <span class="sc">!=</span> <span class="st">'Todas las edades'</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    nacionalidad <span class="sc">!=</span> <span class="st">'Total'</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    sexo <span class="sc">!=</span> <span class="st">'Total'</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="AVANZADO - Filtrar las observaciones cuyo valor coincide con un conjunto de valores prefijado">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+AVANZADO - Filtrar las observaciones cuyo valor coincide con un conjunto de valores prefijado
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Para eliminar los países que no deseamos, utilizaremos el siguiente método:</p>
+<ul>
+<li>Crearemos un vector con los países que queremos conservar</li>
+<li>Filtraremos las observaciones cuyo valor en la variable <code>nacionalidad</code> no esté incluido entre los valores deseados.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Definimos el vector de países que queremos conservar</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>paisesDeseados <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Alemania",</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Apátridas",</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Argelia",</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Argentina",</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Bangladesh",</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Bélgica",</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Bolivia",</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Brasil",</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Bulgaria",</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Canadá",</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Chile",</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "China",</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Colombia",</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Cuba",</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"De Africa"</span>,</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"De América del Norte"</span>,</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"De Asia"</span>,</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"De Centro América y Caribe"</span>,</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"De Oceanía"</span>,</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"De Sudamérica"</span>,</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Dinamarca",</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Ecuador",</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Española"</span>,</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Estados Unidos de América",</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Extranjera",</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Filipinas",</span></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Finlandia",</span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Francia",</span></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Gambia",</span></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Ghana",</span></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Guinea",</span></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Guinea Ecuatorial",</span></span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Honduras",</span></span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "India",</span></span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Irlanda",</span></span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Italia",</span></span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Lituania",</span></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Mali",</span></span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Marruecos",</span></span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Mauritania",</span></span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "México",</span></span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Moldavia",</span></span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Nicaragua",</span></span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Nigeria",</span></span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Noruega",</span></span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Otro país de África",</span></span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Otro país de Asia",</span></span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Otro país de Centro América y Caribe",</span></span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Otro país de la Unión Europea sin España",</span></span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Otro país de Sudamérica",</span></span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Otro país del resto de Europa",</span></span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "País de Europa menos UE27_2020",</span></span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a>  <span class="st">"País de Europa menos UE28"</span>,</span>
+<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a>  <span class="co">#"País de la UE27_2020 sin España",</span></span>
+<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a>  <span class="st">"País de la UE28 sin España"</span> <span class="co">#,</span></span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Países Bajos",</span></span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Pakistán",</span></span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Paraguay",</span></span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Perú",</span></span>
+<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Polonia",</span></span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Portugal",</span></span>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Reino Unido",</span></span>
+<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "República Dominicana",</span></span>
+<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Rumanía",</span></span>
+<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Rusia",</span></span>
+<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Senegal",</span></span>
+<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Suecia",</span></span>
+<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Suiza",</span></span>
+<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Ucrania",</span></span>
+<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Uruguay",</span></span>
+<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "Venezuela"</span></span>
+<span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a><span class="co"># Eliminación de los datos de países no incluidos en el vector 'paisesDeseados'</span></span>
+<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a>datosPiramide <span class="ot">&lt;-</span> datosPiramide[datosPiramide<span class="sc">$</span>nacionalidad <span class="sc">%in%</span> paisesDeseados, ]</span>
+<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(paisesDeseados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="transformación-de-datos-tipo-character-a-numeric" class="level3">
+<h3 class="anchored" data-anchor-id="transformación-de-datos-tipo-character-a-numeric">Transformación de datos tipo <strong>character</strong> a <strong>numeric</strong></h3>
+<div class="callout callout-style-default callout-tip callout-titled" title="BÁSICO - Transformar datos tipo 'character' a 'numeric' con `as.numeric()`">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+BÁSICO - Transformar datos tipo ‘character’ a ‘numeric’ con <code>as.numeric()</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Cuando el vector tipo <strong>character</strong> que queremos convertir a tipo <strong>numeric</strong> sólo contiene números, sin símbolos como <code>€</code>, entonces puede hacerse la conversión directamente utilizado la función <code>as.numeric()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vector original de tipo character. Los valores están entre comillas</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'12312341'</span>, <span class="st">'1313'</span>, <span class="st">'1491'</span>, <span class="st">'1.38'</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>vector</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "12312341" "1313"     "1491"     "1.38"    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(vector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vector transformado de tipo numeric</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>vector_numeric <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(vector)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>vector_numeric</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12312341.00     1313.00     1491.00        1.38</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(vector_numeric)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "numeric"</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="AVANZADO - Limpiar los caracteres indeseados antes de convertir variables a formato numérico">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+AVANZADO - Limpiar los caracteres indeseados antes de convertir variables a formato numérico
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Cuando queremos convertir datos tipo <strong>character</strong> a <strong>numeric</strong>, debemos tener cuidado con los signos ortográficos de separación de miles y decimales.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertimos los datos tipo character a numeric</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>datosPiramide<span class="sc">$</span>total_numeric <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">parse_number</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>total, </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">locale =</span> readr<span class="sc">::</span><span class="fu">locale</span>(<span class="at">decimal_mark =</span> <span class="st">","</span>, <span class="at">grouping_mark =</span> <span class="st">"."</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Eliminamos la variable original</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>datosPiramide<span class="sc">$</span>total <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="fase-4---transformación-de-los-datos-para-el-análisis" class="level2">
+<h2 class="anchored" data-anchor-id="fase-4---transformación-de-los-datos-para-el-análisis">Fase 4 - Transformación de los datos para el análisis</h2>
+<section id="transformación-de-la-variable-sexo-en-factor" class="level3">
+<h3 class="anchored" data-anchor-id="transformación-de-la-variable-sexo-en-factor">Transformación de la variable <code>sexo</code> en factor</h3>
+<p>La variable sexo está en formato <em>caracter</em>, pero es una categoría. La transformaremos en un factor con la función <code>as.factor()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>datosPiramide<span class="sc">$</span>sexo_fct <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(datosPiramide<span class="sc">$</span>sexo)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>datosPiramide<span class="sc">$</span>sexo <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="transformacion-de-variables-character-a-factor" class="level3">
+<h3 class="anchored" data-anchor-id="transformacion-de-variables-character-a-factor">Transformacion de variables <strong>character</strong> a <strong>factor</strong></h3>
+<section id="variable-nacionalidad" class="level4">
+<h4 class="anchored" data-anchor-id="variable-nacionalidad">Variable <code>nacionalidad</code></h4>
+<p>Convertiremos la variable con la función <code>as.factor()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>datosPiramide<span class="sc">$</span>nacionalidad_fct <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(datosPiramide<span class="sc">$</span>nacionalidad)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(datosPiramide<span class="sc">$</span>nacionalidad_fct)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "De Africa"                  "De América del Norte"      
+[3] "De Asia"                    "De Centro América y Caribe"
+[5] "De Oceanía"                 "De Sudamérica"             
+[7] "Española"                   "País de Europa menos UE28" 
+[9] "País de la UE28 sin España"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>datosPiramide<span class="sc">$</span>nacionalidad <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="variable-grupo_quinquenal_de_edad" class="level4">
+<h4 class="anchored" data-anchor-id="variable-grupo_quinquenal_de_edad">Variable <code>grupo_quinquenal_de_edad</code></h4>
+<p>Los grupos de edad originales están en formato texto. Necesitamos hacer las siguientes transformaciones:</p>
+<ul>
+<li>Crear un vector de grupos de edad ordenado según nos interese</li>
+<li>Convertir el dato original del tipo ‘character’ al tipo ‘factor’</li>
+</ul>
+<p>Si convertiésemos directamente la variable a tipo factor se quedaría desordenada. Para comprobarlo, utilizaremos una combinación de funciones muy frecuente: <code>levels(as.factor())</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>niveles_sinOrdenar <span class="ot">&lt;-</span> <span class="fu">levels</span>(<span class="fu">as.factor</span>(datosPiramide<span class="sc">$</span>grupo_quinquenal_de_edad))</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>niveles_sinOrdenar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "90 y más años"   "De 0 a 4 años"   "De 10 a 14 años" "De 15 a 19 años"
+ [5] "De 20 a 24 años" "De 25 a 29 años" "De 30 a 34 años" "De 35 a 39 años"
+ [9] "De 40 a 44 años" "De 45 a 49 años" "De 5 a 9 años"   "De 50 a 54 años"
+[13] "De 55 a 59 años" "De 60 a 64 años" "De 65 a 69 años" "De 70 a 74 años"
+[17] "De 75 a 79 años" "De 80 a 84 años" "De 85 a 89 años"</code></pre>
+</div>
+</div>
+<p>Por tanto, tenemos que indicarle a R cómo nos gustaría ordenar los factores cuando lo convirtamos a un factor. Para ello, crearemos un vector de orden haciendo uso de la función <code>c()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>niveles_ordenados <span class="ot">&lt;-</span> niveles_sinOrdenar[<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">11</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">17</span>, <span class="dv">18</span>, <span class="dv">19</span>, <span class="dv">1</span>)]</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>niveles_ordenados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "De 0 a 4 años"   "De 5 a 9 años"   "De 10 a 14 años" "De 15 a 19 años"
+ [5] "De 20 a 24 años" "De 25 a 29 años" "De 30 a 34 años" "De 35 a 39 años"
+ [9] "De 40 a 44 años" "De 45 a 49 años" "De 50 a 54 años" "De 55 a 59 años"
+[13] "De 60 a 64 años" "De 65 a 69 años" "De 70 a 74 años" "De 75 a 79 años"
+[17] "De 80 a 84 años" "De 85 a 89 años" "90 y más años"  </code></pre>
+</div>
+</div>
+<p>Ahora, podemos utilizar la función <code>factor()</code> para convertir la variable original al formato deseado</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>datosPiramide<span class="sc">$</span>grupo_quinquenal_de_edad_fct <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> datosPiramide<span class="sc">$</span>grupo_quinquenal_de_edad,</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> niveles_ordenados,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">ordered =</span> <span class="cn">TRUE</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Podemos comprobar que la transformación ha sido correcta, porque los valores de <code>grupo_quinquenal_de_edad</code> son los mismos que los de la nueva variable</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(datosPiramide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Sin embargo, la nueva variable permite una mejor exploración del contenido del dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estructura del dataframe</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(datosPiramide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   13186 obs. of  6 variables:
+ $ grupo_quinquenal_de_edad    : chr  "De 0 a 4 años" "De 0 a 4 años" "De 0 a 4 años" "De 0 a 4 años" ...
+ $ periodo                     : chr  "1 de enero de 2021" "1 de julio de 2020" "1 de enero de 2020" "1 de julio de 2019" ...
+ $ total_numeric               : num  843011 864405 885805 900435 919772 ...
+ $ sexo_fct                    : Factor w/ 2 levels "Hombres","Mujeres": 1 1 1 1 1 1 1 1 1 1 ...
+ $ nacionalidad_fct            : Factor w/ 9 levels "De Africa","De América del Norte",..: 7 7 7 7 7 7 7 7 7 7 ...
+ $ grupo_quinquenal_de_edad_fct: Ord.factor w/ 19 levels "De 0 a 4 años"&lt;..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Resumen descriptivo de los valores</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(datosPiramide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> grupo_quinquenal_de_edad   periodo          total_numeric        sexo_fct   
+ Length:13186             Length:13186       Min.   :      1   Hombres:6593  
+ Class :character         Class :character   1st Qu.:    704   Mujeres:6593  
+ Mode  :character         Mode  :character   Median :   5244                 
+                                             Mean   : 134342                 
+                                             3rd Qu.:  33142                 
+                                             Max.   :1757607                 
+                                                                             
+                   nacionalidad_fct  grupo_quinquenal_de_edad_fct
+ De Africa                 :1482    De 0 a 4 años  : 694         
+ De América del Norte      :1482    De 5 a 9 años  : 694         
+ De Asia                   :1482    De 10 a 14 años: 694         
+ De Centro América y Caribe:1482    De 15 a 19 años: 694         
+ De Oceanía                :1482    De 20 a 24 años: 694         
+ De Sudamérica             :1482    De 25 a 29 años: 694         
+ (Other)                   :4294    (Other)        :9022         </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Primeros y últimos valores del dataframe</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(datosPiramide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  grupo_quinquenal_de_edad            periodo total_numeric sexo_fct
+1            De 0 a 4 años 1 de enero de 2021        843011  Hombres
+2            De 0 a 4 años 1 de julio de 2020        864405  Hombres
+3            De 0 a 4 años 1 de enero de 2020        885805  Hombres
+4            De 0 a 4 años 1 de julio de 2019        900435  Hombres
+5            De 0 a 4 años 1 de enero de 2019        919772  Hombres
+6            De 0 a 4 años 1 de julio de 2018        931657  Hombres
+  nacionalidad_fct grupo_quinquenal_de_edad_fct
+1         Española                De 0 a 4 años
+2         Española                De 0 a 4 años
+3         Española                De 0 a 4 años
+4         Española                De 0 a 4 años
+5         Española                De 0 a 4 años
+6         Española                De 0 a 4 años</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(datosPiramide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      grupo_quinquenal_de_edad            periodo total_numeric sexo_fct
+99289            90 y más años 1 de julio de 2004             6  Mujeres
+99290            90 y más años 1 de enero de 2004             6  Mujeres
+99291            90 y más años 1 de julio de 2003             4  Mujeres
+99292            90 y más años 1 de enero de 2003             2  Mujeres
+99293            90 y más años 1 de julio de 2002             2  Mujeres
+99294            90 y más años 1 de enero de 2002             2  Mujeres
+      nacionalidad_fct grupo_quinquenal_de_edad_fct
+99289       De Oceanía                90 y más años
+99290       De Oceanía                90 y más años
+99291       De Oceanía                90 y más años
+99292       De Oceanía                90 y más años
+99293       De Oceanía                90 y más años
+99294       De Oceanía                90 y más años</code></pre>
+</div>
+</div>
+<p>Una vez revisada, podemos eliminar la variable original, y limpiar las variables intermedias</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>datosPiramide<span class="sc">$</span>grupo_quinquenal_de_edad <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(niveles_ordenados)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(niveles_sinOrdenar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="transformacion-de-la-variable-periodo-en-factor" class="level3">
+<h3 class="anchored" data-anchor-id="transformacion-de-la-variable-periodo-en-factor">Transformacion de la variable <code>periodo</code> en factor</h3>
+<p>La transformación de la variable <code>periodo</code> en factor requiere un proceso análogo al descrito en la variable <code>grupo_quinquenal_de_edad</code>:</p>
+<ul>
+<li>Crear un vector de periodos ordenado según nos interese</li>
+<li>Convertir el dato original del tipo ‘character’ al tipo ‘factor’</li>
+</ul>
+<p>Haremos todo el proceso en el mismo <em>chunk</em> de código:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creamos un vector temporal de niveles sin ordenar</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>niveles_sinOrdenar <span class="ot">&lt;-</span> <span class="fu">levels</span>(<span class="fu">as.factor</span>(datosPiramide<span class="sc">$</span>periodo))</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>niveles_sinOrdenar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "1 de enero de 2002" "1 de enero de 2003" "1 de enero de 2004"
+ [4] "1 de enero de 2005" "1 de enero de 2006" "1 de enero de 2007"
+ [7] "1 de enero de 2008" "1 de enero de 2009" "1 de enero de 2010"
+[10] "1 de enero de 2011" "1 de enero de 2012" "1 de enero de 2013"
+[13] "1 de enero de 2014" "1 de enero de 2015" "1 de enero de 2016"
+[16] "1 de enero de 2017" "1 de enero de 2018" "1 de enero de 2019"
+[19] "1 de enero de 2020" "1 de enero de 2021" "1 de julio de 2002"
+[22] "1 de julio de 2003" "1 de julio de 2004" "1 de julio de 2005"
+[25] "1 de julio de 2006" "1 de julio de 2007" "1 de julio de 2008"
+[28] "1 de julio de 2009" "1 de julio de 2010" "1 de julio de 2011"
+[31] "1 de julio de 2012" "1 de julio de 2013" "1 de julio de 2014"
+[34] "1 de julio de 2015" "1 de julio de 2016" "1 de julio de 2017"
+[37] "1 de julio de 2018" "1 de julio de 2019" "1 de julio de 2020"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creamos un vector de orden</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>niveles_ordenados <span class="ot">&lt;-</span> niveles_sinOrdenar[<span class="fu">c</span>(</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="dv">21</span>, <span class="dv">2</span>, <span class="dv">22</span>, <span class="dv">3</span>, <span class="dv">23</span>, <span class="dv">4</span>, <span class="dv">24</span>, <span class="dv">5</span>, <span class="dv">25</span>,</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">6</span>, <span class="dv">26</span>, <span class="dv">7</span>, <span class="dv">27</span>, <span class="dv">8</span>, <span class="dv">28</span>, <span class="dv">9</span>, <span class="dv">29</span>, <span class="dv">10</span>, <span class="dv">30</span>,</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">11</span>, <span class="dv">31</span>, <span class="dv">12</span>, <span class="dv">32</span>, <span class="dv">13</span>, <span class="dv">33</span>, <span class="dv">14</span>, <span class="dv">34</span>, <span class="dv">15</span>,</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">35</span>, <span class="dv">16</span>, <span class="dv">36</span>, <span class="dv">17</span>, <span class="dv">37</span>, <span class="dv">18</span>, <span class="dv">38</span>, <span class="dv">19</span>, <span class="dv">39</span>, <span class="dv">20</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>  )]</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>niveles_ordenados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "1 de enero de 2002" "1 de julio de 2002" "1 de enero de 2003"
+ [4] "1 de julio de 2003" "1 de enero de 2004" "1 de julio de 2004"
+ [7] "1 de enero de 2005" "1 de julio de 2005" "1 de enero de 2006"
+[10] "1 de julio de 2006" "1 de enero de 2007" "1 de julio de 2007"
+[13] "1 de enero de 2008" "1 de julio de 2008" "1 de enero de 2009"
+[16] "1 de julio de 2009" "1 de enero de 2010" "1 de julio de 2010"
+[19] "1 de enero de 2011" "1 de julio de 2011" "1 de enero de 2012"
+[22] "1 de julio de 2012" "1 de enero de 2013" "1 de julio de 2013"
+[25] "1 de enero de 2014" "1 de julio de 2014" "1 de enero de 2015"
+[28] "1 de julio de 2015" "1 de enero de 2016" "1 de julio de 2016"
+[31] "1 de enero de 2017" "1 de julio de 2017" "1 de enero de 2018"
+[34] "1 de julio de 2018" "1 de enero de 2019" "1 de julio de 2019"
+[37] "1 de enero de 2020" "1 de julio de 2020" "1 de enero de 2021"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># factorizamos la variable original</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>datosPiramide<span class="sc">$</span>periodo_fct <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo,</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">levels =</span> niveles_ordenados,</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ordered =</span> <span class="cn">TRUE</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspeccionamos que la transformación ha ido bien</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(datosPiramide)</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Creamos una nueva variable de clase fecha para series temporales</span></span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>datosPiramide<span class="sc">$</span>fechaPeriodo <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>   datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span> <span class="st">"1 de enero de 2002"</span> <span class="sc">~</span> <span class="st">'01-01-2002'</span>,</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>   datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span> <span class="st">"1 de julio de 2002"</span> <span class="sc">~</span> <span class="st">'01-07-2002'</span>,</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>   datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span> <span class="st">"1 de enero de 2003"</span> <span class="sc">~</span> <span class="st">'01-01-2003'</span>,</span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>   datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span> <span class="st">"1 de julio de 2003"</span> <span class="sc">~</span> <span class="st">'01-07-2003'</span>,</span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>   datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span> <span class="st">"1 de enero de 2004"</span> <span class="sc">~</span> <span class="st">'01-01-2004'</span>,</span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>   datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span> <span class="st">"1 de julio de 2004"</span> <span class="sc">~</span> <span class="st">'01-01-2004'</span>,</span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>   datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span> <span class="st">"1 de enero de 2005"</span> <span class="sc">~</span> <span class="st">'01-01-2005'</span>,</span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>   datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span> <span class="st">"1 de julio de 2005"</span> <span class="sc">~</span> <span class="st">'01-07-2005'</span>,</span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>   datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span> <span class="st">"1 de enero de 2006"</span> <span class="sc">~</span> <span class="st">'01-01-2006'</span>,</span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2006"</span> <span class="sc">~</span> <span class="st">'01-07-2006'</span>,</span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2007"</span> <span class="sc">~</span> <span class="st">'01-01-2007'</span>,</span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2007"</span> <span class="sc">~</span> <span class="st">'01-07-2007'</span>,</span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2008"</span> <span class="sc">~</span> <span class="st">'01-01-2008'</span>,</span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2008"</span> <span class="sc">~</span> <span class="st">'01-07-2008'</span>,</span>
+<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2009"</span> <span class="sc">~</span> <span class="st">'01-01-2009'</span>,</span>
+<span id="cb48-28"><a href="#cb48-28" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2009"</span> <span class="sc">~</span> <span class="st">'01-07-2009'</span>,</span>
+<span id="cb48-29"><a href="#cb48-29" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2010"</span> <span class="sc">~</span> <span class="st">'01-01-2010'</span>,</span>
+<span id="cb48-30"><a href="#cb48-30" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2010"</span> <span class="sc">~</span> <span class="st">'01-07-2010'</span>,</span>
+<span id="cb48-31"><a href="#cb48-31" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2011"</span> <span class="sc">~</span> <span class="st">'01-01-2011'</span>,</span>
+<span id="cb48-32"><a href="#cb48-32" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2011"</span> <span class="sc">~</span> <span class="st">'01-07-2011'</span>,</span>
+<span id="cb48-33"><a href="#cb48-33" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2012"</span> <span class="sc">~</span> <span class="st">'01-01-2012'</span>,</span>
+<span id="cb48-34"><a href="#cb48-34" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2012"</span> <span class="sc">~</span> <span class="st">'01-07-2012'</span>,</span>
+<span id="cb48-35"><a href="#cb48-35" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2013"</span> <span class="sc">~</span> <span class="st">'01-01-2013'</span>,</span>
+<span id="cb48-36"><a href="#cb48-36" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2013"</span> <span class="sc">~</span> <span class="st">'01-07-2013'</span>,</span>
+<span id="cb48-37"><a href="#cb48-37" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2014"</span> <span class="sc">~</span> <span class="st">'01-01-2014'</span>,</span>
+<span id="cb48-38"><a href="#cb48-38" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2014"</span> <span class="sc">~</span> <span class="st">'01-07-2014'</span>,</span>
+<span id="cb48-39"><a href="#cb48-39" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2015"</span> <span class="sc">~</span> <span class="st">'01-01-2015'</span>,</span>
+<span id="cb48-40"><a href="#cb48-40" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2015"</span> <span class="sc">~</span> <span class="st">'01-07-2015'</span>,</span>
+<span id="cb48-41"><a href="#cb48-41" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2016"</span> <span class="sc">~</span> <span class="st">'01-01-2016'</span>,</span>
+<span id="cb48-42"><a href="#cb48-42" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2016"</span> <span class="sc">~</span> <span class="st">'01-07-2016'</span>,</span>
+<span id="cb48-43"><a href="#cb48-43" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2017"</span> <span class="sc">~</span> <span class="st">'01-01-2017'</span>,</span>
+<span id="cb48-44"><a href="#cb48-44" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2017"</span> <span class="sc">~</span> <span class="st">'01-07-2017'</span>,</span>
+<span id="cb48-45"><a href="#cb48-45" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2018"</span> <span class="sc">~</span> <span class="st">'01-01-2018'</span>,</span>
+<span id="cb48-46"><a href="#cb48-46" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2018"</span> <span class="sc">~</span> <span class="st">'01-07-2018'</span>,</span>
+<span id="cb48-47"><a href="#cb48-47" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2019"</span> <span class="sc">~</span> <span class="st">'01-01-2019'</span>,</span>
+<span id="cb48-48"><a href="#cb48-48" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2019"</span> <span class="sc">~</span> <span class="st">'01-07-2019'</span>,</span>
+<span id="cb48-49"><a href="#cb48-49" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2020"</span> <span class="sc">~</span> <span class="st">'01-01-2020'</span>,</span>
+<span id="cb48-50"><a href="#cb48-50" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de julio de 2020"</span> <span class="sc">~</span> <span class="st">'01-07-2020'</span>,</span>
+<span id="cb48-51"><a href="#cb48-51" aria-hidden="true" tabindex="-1"></a>  datosPiramide<span class="sc">$</span>periodo <span class="sc">==</span>  <span class="st">"1 de enero de 2021"</span> <span class="sc">~</span> <span class="st">'01-01-2021'</span></span>
+<span id="cb48-52"><a href="#cb48-52" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb48-53"><a href="#cb48-53" aria-hidden="true" tabindex="-1"></a>  lubridate<span class="sc">::</span><span class="fu">dmy</span>()</span>
+<span id="cb48-54"><a href="#cb48-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-55"><a href="#cb48-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Anulamos la variable original</span></span>
+<span id="cb48-56"><a href="#cb48-56" aria-hidden="true" tabindex="-1"></a>datosPiramide<span class="sc">$</span>periodo <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="renivelado-de-factores" class="level3">
+<h3 class="anchored" data-anchor-id="renivelado-de-factores">Renivelado de factores</h3>
+<p>Vamos a simular una migración de décadas a nuestro país. No tenemos ni idea de qué razas han venido, ni qué estructura de población ha surgido tras la migración.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vector aleatorio de migración de razas</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>vectorRazas <span class="ot">&lt;-</span> <span class="fu">sample</span>(</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="st">'Humano'</span>, <span class="st">'Elfo'</span>, <span class="st">'Hobbit'</span>, <span class="st">'Enano'</span>,<span class="st">'Orco'</span>, <span class="st">'Ent'</span>, <span class="st">'Troll'</span>),</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="dv">7</span>,</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">replace =</span> <span class="cn">FALSE</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>vectorProbabilidadMigracion <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>  <span class="fl">0.8</span>, <span class="fl">0.2</span>, <span class="fl">0.05</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>datosPiramide<span class="sc">$</span>raza <span class="ot">&lt;-</span> <span class="fu">sample</span>(</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> vectorRazas,</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="fu">nrow</span>(datosPiramide), </span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">replace =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">prob =</span> vectorProbabilidadMigracion</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.factor</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exportamos-los-datos" class="level3">
+<h3 class="anchored" data-anchor-id="exportamos-los-datos">Exportamos los datos</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> datosPiramide,</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> here<span class="sc">::</span><span class="fu">here</span>(</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'data'</span>, <span class="st">'lab'</span>, <span class="st">'datosPiramide.rds'</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../notebooks/anexo02_funciones.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Anexo 02 - Funciones utilizadas en los capítulos</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,42 @@
+---
+title: "Análisis de la población de la tierra Media antes de la guerra del Anillo"
+author: 'Sauron, amigo de sus amigos'
+format: html
+toc: true
+---
+
+## Introducción
+Este análisis evalúa cómo se distribuía la población de las distintas razas de la tierra Media antes de que la liásemos parda:
+
++ Los hombres
++ Los elfos
++ Los enanos
++ Los orcos
++ Los trolls
++ Los ents
++ Los hobbits
+
+## Los pueblos de la tierra media
+
+### Hombres
+```{r}
+#| eval: false
+rio::import('data/raw/poblacionHombres.csv')
+```
+
+### Elfos
+Se espera que los elfos sigan la siguiente distribución poblacional:
+
+$$
+\begin{equation*}
+  1-\binom{n}{1}\frac{1}{2}+\binom{n}{2}\frac{1}{2^2}-\dotsb -\binom{n}{n-1}\frac{1}{2^{n-1}}=0
+\end{equation*}
+$$
+
+### Enanos
+### Orcos
+### Trolls
+### Ents
+### Hobbits
+
+## Conclusiones

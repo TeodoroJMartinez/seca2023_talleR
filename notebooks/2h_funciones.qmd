@@ -1,0 +1,79 @@
+# Funciones {.unnumbered}
+
+Además de las funciones predeterminadas o que vienen incluidas en los paquetes, podemos definir nuestras propias funciones con `function(){}`.
+
+Las funciones se definen con una combinación de algunos o todos los siguientes elementos elementos:
+
+- Un listado de argumentos
+- Un listado de expresiones
+- Un listado de valores que se mostrarán al usuario
+
+::: {.callout-important collapse="true" title="EXPERTO - Crear funciones personalizadas"}
+
+Crearemos como ejemplo la función `cuentaNumeros()` con la siguiente definición:
+
+- Tendrá dos argumentos:
+  + `numeroInicial`, que define el inicio de la secuencia. Su valor predeterminado será 1
+  + `numeroFinal`, que define el final de la secuencia. Su valor predeterminado será 10
+  
+- La función realizará las siguientes acciones:
+  + Imprimirá tres mensajes al comienzo:
+    + '*El número inicial es:*', seguido de `numeroInicial`
+    + '*El número final es:*', seguido de `numeroFinal`
+    + '*Se imprimirán*', seguido del número de elementos, y '*números*'
+  + A continuación, ejecutará un bucle, que ejecutará las siguientes acciones en cada iteración:
+    + Imprimir el mensaje: '*El número*', seguido del número i-ésimo de la secuencia entre `numeroInicial` y `numeroFinal`, '*se imprimió en la ronda*', seguido del número de ronda `i`
+  + Por último, tras el bucle, imprimirá el mensaje '*¡Ya hemos terminado!*'
+  
+```{r}
+cuentaNumeros <- function(
+    numeroInicial = 1,
+    numeroFinal = 10
+    ){
+  secuencia <- numeroInicial:numeroFinal
+  mensaje1 <- paste('El número inicial es:', numeroInicial)
+  mensaje2 <- paste('El número final es:', numeroFinal)
+  mensaje3 <- paste('Se imprimirán', numeroFinal - numeroInicial + 1, 'número(s)')
+  print(mensaje1)
+  print(mensaje2)
+  print(mensaje3)
+  for (i in 1:length(secuencia)) {
+    mensaje4 <- paste(
+      'El número', 
+      secuencia[i],
+      'se imprimió en la ronda', 
+      i
+      )
+    print(mensaje4)
+  }
+  print('¡Ya hemos terminado!')
+}
+```
+
+Una vez definida, al ejecutar la definición de la función aparece en el entorno activo. 
+
+![](imagen/funcionCuentaNumeros.png)
+Para invocarla, lo haremos como cualquier otra función.
+
+Si no indicamos un valor para los argumentos, tomará los valores por defecto:
+```{r}
+# Si no indicamos un valor para los argumentos, tomará los valores por defecto
+cuentaNumeros()
+```
+
+Si definimos argumentos, la función modificará su salida
+```{r}
+cuentaNumeros(
+  numeroInicial = 5,
+  numeroFinal   = 10
+)
+```
+
+
+:::
+
+La creación de funciones personalizadas se considera programación avanzada de R, y está fuera del alcance del taller. 
+
+Si quiere ampliar información, puede consultar el capítulo correspondiente de [R for Data Science](https://r4ds.had.co.nz/functions.html)
+
+

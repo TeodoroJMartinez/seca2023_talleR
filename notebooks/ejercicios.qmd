@@ -1,0 +1,52 @@
+# Ejercicios {.unnumbered}
+
+## Descripción del caso
+
+Estamos evaluando los indicadores del programa PROA regional. Queremos evaluar algunos indicadores de consumo de antibióticos en una base de datos de receta facturada de los últimos tres años.
+
+La ficha del indicador a evaluar es la siguiente:
+
+|**a.1.1**| **Consumo de antibióticos de uso sistémico (J01) con receta en el sistema autonómico de Salud** |
+|:--------------|:--------------------------------------------------------|
+| **Fórmula** |En DTD: DDD ATB J01 x 1000/ N.º tarjetas sanitarias x nº días     |
+|| Dosis Diarias Definidas x 1.000 habitantes y día, de antibióticos sistémicos (grupo J01) prescritos con receta en el SMS  |
+| **Exclusiones**   |  |
+| **Aclaraciones**  | *DDD (dosis diaria definida)*: Unidad técnica de medida y comparación que equivale a la dosis media diaria de mantenimiento cuando se utiliza en su indicación principal, por una vía de administración determinada, expresada en cantidad de principio activo.       |
+|| *Denominador - Nº de tarjetas*: Población con TSI (Tarjeta Sanitaria Individual) en la lista TSI 001, TSI 002, TSI 003, TSI 004, TSI 005 y FAR 003   |
+|| *ATB J01*: Se contabilizan como antibióticos sistémicos todos los medicamentos del grupo terapéutico Antibacterianos de uso sistémico (J01)  |
+| **Tipo indicador**| Proceso     |
+| **Justificación** | La DTD nos aproxima la tasa de población en tratamiento diario con antibiótico. La medida del volumen de antibióticos prescritos es una medida de la presión antibiótica en el medio. Existe una relación lineal entre el uso de antimicrobianos y el aumento de microorganismos resistentes a éstos. El uso del dato poblacional puede incorporar sesgos, ya que no todos los habitantes de una zona son atendidos por el Sistema Sanitario Público, por ese motivo y como alternativa al dato poblacional, se puede utilizar el número de usuarios (o tarjetas sanitarias activas). |
+| **Fuente**| Datos disponibles por la DGAS (Subdirección General de Farmacia) en el fichero Gestión de la Prestación Farmacéutica      |
+| **Periodo de evaluación** | Anual (seguimiento mensual) |
+
+Nuestra base poblacional es la siguiente:
+
+|Indicador|Valor|
+|-|-|
+|Pacientes adultos (> 14 años)|138966|
+|Pacientes pediátricos (≤ 14 años)|21261|
+|Pacientes preescolares (< 3 años)|3176|
+|Número total tarjetas sanitarias 2022|160227|
+|Número de días en 2022|365|
+
+Las áreas de salud de interés son las siguientes:
+
+- Mordor
+- Rohan
+- La Comarca
+- Rivendel
+- Lothlorien
+- Gondor
+- Tierras del Sur
+- Moria
+
+La base de datos de prescripción es `fakeReceta.rds`, y está en la carpeta `data/raw`
+
+## Tareas
+
+- Tarea 1 - Evaluar el indicador 
+- Tarea 2 - Gráfico de Consumo crudo de antibióticos, por edad, en el año 2021
+- Tarea 3 - Gráfico de Consumo crudo de antibióticos, por área de salud
+- Tarea 4 - Gráfico de Consumo crudo de antibióticos, por prescriptor
+- Tarea 5 - Gráfico de Variabilidad del número de envases de antibióticos prescritos, por área de salud
+

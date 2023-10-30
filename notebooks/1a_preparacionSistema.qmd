@@ -1,0 +1,10 @@
+# Preparación del sistema {.unnumbered}
+
+Necesita cuatro prerrequisitos para poder ejecutar el código del taller:
+
+|||
+|-|----|
+|![](imagen/r-lang-logo-png-transparent.png){width=1in}|Instalar R|
+|![](imagen/RStudio_Logo.png){width=1in}|Instalar RStudio|
+|![](imagen/CRANlogo.png){width=1in}|Instalar los paquetes adicionales de R que utilizaremos en el taller|
+|![](imagen/gitlab.jpeg){width=1in}|Descargar los datos y el código utilizados en taller|

@@ -1,0 +1,110 @@
+# Gráficos con ggplot2 {.unnumbered}
+
+Los gráficos en R son un de sus mayores atractivos. El paquete más utilizado para realizar gráficos es **ggplot2**
+
+## Estructura de un gráfico **ggplot2**
+
+Los gráficos **ggplot2** se construyen por capas, como si estuviésemos superponiendo láminas de acetato traslúcido de colores. Las capas fundamentales son las siguientes:
+
++ La capa de definición - es el lienzo sobre el que pintaremos nuestro gráfico
++ La capa de mapeo de variables: asignaremos cómo se van a correlacionar las variables del data.frame con los elementos del gráfico
++ La capa de estéticas: indicaremos qué elementos queremos pintar en nuestro gráfico (líneas, puntos, barras...)
++ La capa de etiquetas: en ella modificaremos títulos, tipos de letra... etc
++ La capa de tema: da un aspecto general a nuestro gráfico.
+
+Veamos un ejemplo con la base de datos 'diamonds' del paquete **ggplot2**:
+
+```{r}
+## Cargamos los datos
+data(diamonds, package = 'ggplot2')
+
+# Revisamos la estructura de los datos
+str(diamonds)
+```
+
+Vamos a ir construyendo el gráfico por capas, para ver cómo se construye paso a paso
+
+## Primera capa - Lienzo
+La primera capa sólo establece el lienzo en el que pintaremos nuestro gráfico. Deja un recuadro en blanco sobre el que pintar el resto de elementos
+
+```{r}
+g <- ggplot2::ggplot(
+  data = diamonds
+  )
+g
+```
+
+## Segunda capa - Mapeo de variables (estética)
+
+Imaginemos que queremos dibujar un diagrama de dispersión para valorar cómo varía el precio de los diamantes en función del peso de los mismos. Para ello, situaremos la variable `carat` en el eje x, y la variable `price` en el eje y
+
+Indicaremos este mapeo con la función `ggplot2::aes()`
+```{r}
+g <- ggplot2::ggplot(
+  data    = diamonds,
+  mapping = ggplot2::aes(
+    x = carat,
+    y = price
+  )
+)
+g
+```
+Aparece ahora el eje de coordenadas tal y como lo hemos indicado. `carat` está en el eje x, y `price`está en el eje y. Aún no hemos dibujado nada.
+
+## Tercera capa - Geometría
+
+Queremos hacer un diagrama de dispersión, con puntos. Para ello, necesitamos una geometría de tipo punto.
+
+```{r}
+g <- g +
+  ggplot2::geom_point()
+g
+```
+Ya tenemos un primer diagrama de dispersión del precio en función del peso.
+
+## Paso 4- Aspecto general
+Podemos modificar el aspecto general del gráfico con un tema. Por ejemplo, podemos quitar ese sombreado que está en el lienzo, con un tema más sencillo
+```{r}
+g <- g +
+  ggplot2::theme_bw()
+g
+```
+## Paso 5 - Etiquetas
+Ahora, completamos nuestro gráfico, añadiendo títulos y etiquetas
+```{r}
+g <- g +
+  ggplot2::labs(
+    title = 'Precio de los diamantes en función de su peso',
+    subtitle = 'Base de datos diamonds del paquete ggplot2'
+  )
+g
+```
+
+Todo junto:
+```{r}
+g <- ggplot2::ggplot(
+  # Primera capa
+  data    = diamonds,
+  
+  # Segunda capa
+  mapping = ggplot2::aes(
+    x = carat,
+    y = price
+    )
+  ) +
+  
+  # Tercera capa
+  ggplot2::geom_point() +
+  
+  # Cuarta capa
+  ggplot2::theme_bw() +
+  
+  # Quinta capa
+  ggplot2::labs(
+    title = 'Precio de los diamantes en función de su peso',
+    subtitle = 'Base de datos diamonds del paquete ggplot2'
+  )
+
+```
+
+

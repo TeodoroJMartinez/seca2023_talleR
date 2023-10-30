@@ -1,0 +1,368 @@
+# Tipos de datos en R {.unnumbered}
+
+En R existen los siguientes tipos de datos:
+
+|Tipo dato|Descripción|Ejemplos|Uso en salud|
+|-|---|---|:-:|
+|**logical**|Lógico|`TRUE` o `FALSE`|+++|
+|**integer**|Entero|`2L`, `352L`, `-32L`|++|
+|**numeric**|Numérico|`2.34`, `-32.345`, `123.13`|+++|
+|**complex**|Complejo|`2+3i`|-|
+|**character**|Carácter|`'k'`, `'Alberta'`, `'1 de enero'`|+++|
+|**raw**|Caracteres expresados como *bytes*|`28 70 00 a8 70 00 60 a8 38 08 90`|-|
+
+::: {.callout-note collapse="true" title="EJEMPLO - Crear variables con `<-`"}
+
+Para crear variables utilizamos el operador de asignación `<-`.
+
+Recuerde que tiene a su disposición el atajo de teclado `Alt` + `-`
+
+```{r}
+# Definimos una variable de cada tipo
+esTroll <- TRUE                    # logical
+numeroHijos <- 3L                  # integer
+superficieCorporal <- 3314.4883947 # numeric
+raza <- 'Troll'                    # character
+```
+
+:::
+::: {.callout-tip collapse="true" title="BÁSICO - Identificar el tipo de datos de una variable con `class()` "}
+Para identificar el tipo de datos de una variable, podemos usar la función `class()`
+
+```{r}
+# Comprobamos que R ha tipificado adecuadamente las variables creadas
+class(esTroll)
+class(numeroHijos)
+class(superficieCorporal)
+class(raza)
+
+```
+
+:::
+
+## Tipos de datos '**numeric**' e '**integer**'
+
+Los dos tipos de variables **numeric** e **integer** sirven para almacenar números.
+La diferencia entre ambas es el tipo de número que pueden almacenar:
+
++ Las variables de tipo **integer** sólo pueden almacenar números enteros, tanto positivos como negativos
++ Las variables de tipo **numeric** pueden contener cualquier número real (positivos, negativos, racionales e irracionales).
+
+Las variables **numeric**, por tanto, pueden contener valores enteros también, y son más genéricas. 
+Las variables **integer** ocupan menos memoria, y pueden utilizarse cuando tenemos claro que la variable numérica sólo toma valores discretos (p.e., número de hijos). Si no lo tenemos claro, debemos utilizar el tipo **numeric**.
+
+Para crear variables de tipo **integer**, debemos colocar al final del número la letra `L`, en mayúscula
+
+::: {.callout-tip collapse="true" title="BÁSICO - Creación de variables tipo 'numeric' e 'integer'"}
+```{r}
+# Variable tipo numeric
+numeric <- 34
+class(numeric)
+
+# Variable tipo integer
+integer <- 34L
+class(integer)
+```
+
+:::
+
+### Funciones para manipular los datos de tipo '**numeric**'
+
+Podemos utilizar las siguientes funciones para manipular las variables de tipo **numeric**:
+
+
+|Paquete|Función|Acciones|
+|-|-|-|
+|Base|`round(x, digits = 0)`|Redondeo de números hasta `digits` decimales|
+||`signif(x, digits = 0)`|Redondeo de números hasta `digits` cifras significativas. También puede utilizarse con variables **integer**|
+||`floor(x)`|Devuelve el mayor entero que es menor que x|
+||`ceiling(x)`|Devuelve el menor entero que es mayor que x|
+
+::: {.callout-tip collapse="true" title="BÁSICO - Operaciones con las variables de tipo 'numeric' "}
+
+Podemos aplicarle a las variables **numeric** todas las operaciones que podemos hacer con un número.
+
+```{r}
+# Operaciones aritméticas
+superficieCorporal + 5     # suma
+superficieCorporal - 8     # resta
+superficieCorporal * 100   # multiplicación
+superficieCorporal / 10000 # división
+superficieCorporal ^ 2     # exponenciación
+superficieCorporal %% 2    # módulo (resto de la división entera)
+superficieCorporal %/% 2   # cociente de la división entera
+```
+:::
+
+::: {.callout-tip collapse="true" title="BÁSICO - Funciones para redondeo de números: `round()`, `signif()`,  `floor()`, `cealing()`"}
+Podemos gestionar el número de decimales mediante tres funciones:
+
+|Paquete|Función|Acciones|
+|-|-|-|
+|Base|`round(x, digits = 0)`|Redondeo de números hasta `digits` decimales|
+||`signif(x, digits = 0)`|Redondeo de números hasta `digits` cifras significativas. También puede utilizarse con variables **integer**|
+||`floor(x)`|Devuelve el mayor entero que es menor que x|
+||`ceiling(x)`|Devuelve el menor entero que es mayor que x|
+
+```{r}
+
+# Probamos las funciones de redondeo
+round(superficieCorporal, digits = 2)
+signif(superficieCorporal, digits = 2)
+floor(superficieCorporal)
+ceiling(superficieCorporal)
+```
+
+:::
+
+## Tipo datos '**character**'
+Los tipos de datos **character** pueden contener cualquier cadena de texto: nombres, direcciones, fechas, url, símbolos...
+
+Para crear estas variables, debemos rodear la cadena entre comillas dobles (`"`) o simples (`'`)
+
+::: {.callout-note collapse="true" title="EJEMPLO - Crear variables de tipo 'character'"}
+```{r}
+# Creamos variables de tipo character
+nombre <- 'Trol Alberto López'
+url <- 'https://cran.r-project.org/'
+fecha <- '1 de enero de 2043, lunes, día de la marmota'
+simbolo <- ':)'
+
+# Comprobamos la clase
+class(nombre)
+class(url)
+class(fecha)
+class(simbolo)
+
+```
+:::
+
+### Funciones para manipular los datos de tipo '**character**'
+
+Podemos utilizar las siguientes funciones para gestionar las variables de tipo **character**:
+
+|Paquete|Función|Acciones|
+|-|-|-|
+|Base|`nchar()`|Cuenta el número de caracteres|
+||`tolower()`|Convierte una variable **character** a minúsculas|
+||`toupper()`|Convierte una variable **character** a mayúsculas|
+||`substr()`|Extrae subcadenas de texto de una variable **character**|
+||`sub()`|Sustituye una subcadena por otra en una variable **character**|
+||`paste()`<br>`paste0()`|Concadena variables de tipo **character**|
+
+::: {.callout-tip collapse="true" title="BÁSICO - Número de caracteres de una variable tipo 'character' con `nchar()`"}
+Para evaluar el número de caracteres que tiene una variable numérica, podemos utilizar la función `nchar()`
+```{r}
+nchar(nombre)
+```
+:::
+
+::: {.callout-tip collapse="true" title="BÁSICO - Convertir a mayúsculas o minúsculas con `tolower()` y `toupper()`"}
+Para cambiar entre mayúsculas y minúsculas, podemos usar las funciones `tolower()` y `toupper()`
+```{r}
+# Cambio a minúsculas con `tolower()`
+tolower(nombre)
+
+# Cambio a mayúsculas con `toupper()`
+toupper(nombre)
+```
+
+:::
+
+
+
+::: {.callout-tip collapse="true" title="BÁSICO - Extraer un pedazo de texto de una variable 'character' con `substr()`"}
+La función `substr()` permite extraer texto, especificando los siguientes argumentos:
+
+|Argumento|Descripción|
+|-|---|
+|`x`|Variable tipo **character**|
+|`start`|Posición del carácter inicial que debemos extraer|
+|`stop`|Posición del último carácter que debemos extraer|
+
+```{r}
+# Extraer un pedazo de texto de una variable 'character' con `substr()`
+substr(
+  x = nombre, # Variable tipo **character**
+  start = 1,  # Posición del carácter inicial que debemos extraer
+  stop = 4    # Posición del último carácter que debemos extraer
+)
+
+```
+:::
+
+::: {.callout-warning collapse="true" title="AVANZADO - Extraer un pedazo de texto desde una posición hasta el final"}
+Los argumentos de las funciones pueden tener variables, en lugar de valores fijos.
+Para indicar '*Extraer hasta el final*', nos basta con indicar que `stop = nchar(x)`
+
+```{r}
+# Definimos la variable que indica cuántos caracteres tiene la variable character
+numeroCaracteres <- nchar(nombre)
+
+# Extraer un pedazo de texto de una variable 'character' con `substr()`
+substr(
+  x = nombre,                # Variable tipo **character**
+  start = 6,                 # Posición del carácter inicial que debemos extraer
+  stop = numeroCaracteres    # Posición del último carácter que debemos extraer
+)
+
+```
+:::
+
+::: {.callout-tip collapse="true" title="BÁSICO - Sustituir subcadenas de una variable 'character' con `sub()`"}
+La función `sub()` sustituye subcadenas de una variable 'character' con otras, utilizando los siguientes argumentos:
+
+|Argumento|Descripción|
+|-|---|
+|`pattern`|Subcadena de texto que debe sustituirse|
+|`replacement`|Cadena de texto que sustituye al original|
+|`x`|Variable tipo **character**|
+|`ignore.case`|Indica si deben respetarse mayúsculas y minúsculas|
+
+```{r}
+# Sustituir subcadenas de una variable 'character' con `sub()`
+sub(
+  pattern = 'to',                  # Subcadena de texto que debe sustituirse
+  replacement = 'VIVA MURCIA!!!',  # Cadena de texto que sustituye al original
+  x = nombre,                      # Variable tipo **character**
+  ignore.case = FALSE              # Indica si deben respetarse mayúsculas y minúsculas
+  )
+```
+
+:::
+
+::: {.callout-tip collapse="true" title="BÁSICO - Concatenar dos o más cadenas con `paste()` y `paste0()`"}
+
+Es frecuente que tengamos que concatenar cadenas de texto entre sí. Para ello, utilizamos las funciones `paste()` y `paste0()`
+
+Esencialmente, ambas son la misma función, con la diferencia que en la primera podemos indicar qué carácter o conjunto de caracteres vamos a utilizar para concatenar las cadenas, y en la segunda se unen entre sí sin separación alguna.
+
+|Argumento|Descripción|
+|-|---|
+|`sep`|Subcadena de texto que se utilizará como separador|
+
+```{r}
+# Pegar dos o más cadenas con `paste()` y `paste0()`
+## Creamos una segunda cadena de texto
+cargo <- 'Rey de Trolandia'
+
+## Pegamos las dos cadenas
+### Opción 1 - paste()
+paste(
+  nombre, cargo, # Cadenas que queremos unir
+  sep = ', '     # Separador entre las cadenas
+  )
+
+### Opción 1 - paste0()
+paste0(
+  nombre, cargo # Cadenas que queremos unir
+  )
+
+```
+
+:::
+
+## Tipo datos '**logical**'
+
+Son el tipo de dato más sencillo. Sus valores posibles son únicamente `TRUE` y `FALSE`.
+
+Los datos lógicos se utilizan intensivamente en R:
+
++ como resultado de las comparaciones
++ como argumentos de las funciones
++ como instrumentos para el filtrado de observaciones o selección de variables
+
+Estas variables de tipo lógico tienen una gran utilidad en el filtrado y clasificación de valores en R. **Es muy importante** que comprendamos cómo se construyen.
+
+::: {.callout-note collapse="true" title="EJEMPLO - Creación de las variables tipo 'logical' "}
+
+Las variables tipo **logical** se utilizan tanto en R, que pueden llegar a enmascarar el resto de objetos del entorno.
+
+Es recomendable que todas estas variables tengan un indicativo que permita identificarlas rápidamente. 
+
+Como recomendación personal, recomiendo nombrarlos comenzando por `es`, o su versión en inglés `is`
+```{r}
+esMujer       <- TRUE
+esMayor60     <- FALSE
+esAntibiotico <- TRUE
+```
+
+:::
+
+::: {.callout-note collapse="true" title="BÁSICO - Creación de variables tipo 'logical' mediante comparaciones"}
+Cuando evaluamos si un objeto cumple una condición, el resultado es binario: 
+
++ La condición se cumple: `TRUE`
++ La condición no se cumple: `FALSE`
+
+```{r}
+superficieCorporal < 4
+fecha == '1 de enero de 2043, lunes, día de la marmota'
+nombre == 'Mahatma Gandhi'
+numeroHijos >= 2
+```
+
+Esto puede utilizarse para crear variables tipo lógico a partir de comparaciones
+```{r}
+esSuperficieCorporalMenor4 <- superficieCorporal < 4
+esFechaCorrecta            <- fecha == '1 de enero de 2043, lunes, día de la marmota'
+esNombreCorrecto           <- nombre == 'Mahatma Gandhi'
+esNumeroHijosMayorIgual2   <- numeroHijos >= 2
+```
+Si evaluamos estas variables, veremos que han almacenado el valor lógico de la comparación
+
+```{r}
+esSuperficieCorporalMenor4
+esFechaCorrecta
+esNombreCorrecto
+esNumeroHijosMayorIgual2
+```
+
+:::
+
+### Aritmética de variables de tipo '**logical**'
+
+Una característica adicional de las variables de tipo **logical** es que podemos tratarlas como números, con las siguientes equivalencias:
+
++ `TRUE` $\sim$ 1
++ `FALSE` $\sim$ 0
+
+Por tanto, podemos hacer todo tipo de operaciones matemáticas con ellas, como sumarlas, restarlas, multiplicarlas...
+
+Esto es especialmente útil para identificar el número de elementos de un conjunto de datos que cumple una determinada condición.
+
+::: {.callout-note collapse="true" title="Ejemplo - Suma de elementos tipo 'logical'"}
+
+La aritmética de elementos lógicos es directa. Se comportan como un número entero más
+
+```{r}
+TRUE + TRUE
+esMujer + 7
+esMujer + esNombreCorrecto + esNumeroHijosMayorIgual2
+```
+
+:::
+
+## Limpieza
+
+Limpiamos de la memoria las variables que hemos creado en los ejemplos
+
+```{r}
+#|output: false
+
+# Limpiamos la memoria de variables de ejemplo
+rm(numeric)
+rm(integer)
+rm(esTroll)
+rm(numeroHijos)
+rm(superficieCorporal)
+rm(raza)
+rm(nombre)
+rm(url)
+rm(fecha)
+rm(simbolo)
+rm(esMujer)
+rm(esMayor60)
+rm(esAntibiotico)
+gc()
+```

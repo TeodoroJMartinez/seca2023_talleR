@@ -1,0 +1,16 @@
+## Anexo 01 - Paquetes utilizados en el taller {.unnumbered}
+
+### Parte 0 - Descripción del taller
+
+#### Capítulo 0b - Preparación del sistema
+
+| Paquete          | Descripción                                                                                                          |
+|------------------|----------------------------------------------------------------------------------------------------------------------|
+| **BiocManager**  | [Access the Bioconductor Project Package Repository](https://cran.r-project.org/web/packages/BiocManager/index.html) |
+| **DataExplorer** | [Automate Data Exploration and Treatment](https://cran.r-project.org/web/packages/DataExplorer/index.html)           |
+| **here**         | [A Simpler Way to Find Your Files](https://cran.r-project.org/web/packages/here/index.html)                          |
+| **Hmisc**        | [Harrell Miscellaneous](https://cran.r-project.org/web/packages/Hmisc/)                                              |
+| **installr**     | [Using R to Install Stuff on Windows OS](https://cran.r-project.org/web/packages/installr/index.html)                |
+| **janitor**      | [Simple Tools for Examining and Cleaning Dirty Data](https://cran.r-project.org/web/packages/janitor/index.html)     |
+| **pacman**       | [Package Management Tool](https://cran.r-project.org/web/packages/pacman/index.html)                                 |
+| **Rcmdr**        | [A platform-independent basic-statistics GUI](https://cran.r-project.org/web/packages/Rcmdr/index.html)              |

@@ -1,0 +1,43 @@
+## Anexo 02 - Funciones utilizadas en los capítulos {.unnumbered}
+
+A continuación se detallan todas las funciones de R que se han utilizado durante este taller, con una breve descripción de su utilidad.
+
+Sólo se indica la primera vez que aparece la función en el conjunto del taller.
+
+### Sección '*Introducción*'
+
+#### Capítulo '*0b - Preparación del sistema*'
+
+| Paquete      | Función                                          | Acciones                                                                                                      |
+|--------------|--------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| **base**     | `c()`                                            | Combinar varios valores en un vector o lista                                                                  |
+|              | `if()`<br>`if()...else`<br> `for()`<br>`while()` | Controlar el flujo de la ejecución basado en condiciones lógicas                                              |
+|              | `library()`<br>`require()`                       | Cargar paquetes adicionales de R en el entorno actual                                                         |
+|              | `options()`                                      | Configurar las opciones globales que afectan al modo en que R evalúa y muestra los resultados                 |
+|              | `paste0()`                                       | Concatenar vectores, tras convertirlos a la clase **character**                                               |
+|              | `source()`                                       | Conectar con un fichero, leer todas las instrucciones que contiene, y ejecutarlas secuencialmente             |
+| **here**     | `here()`                                         | Facilitar el acceso a ficheros de un proyecto, creando rutas relativas a partir del directorio raíz del mismo |
+| **installr** | `updateR()`                                      | Actualizar la versión de R (sólo en sistemas Windows)                                                         |
+| **pacman**   | `p_install_gh()`                                 | Instalar un paquete desde un repositorio de GitHub                                                            |
+| **utils**    | `install.packages()`                             | Instalar paquetes adicionales de R                                                                            |
+
+### Sección '*Proceso de análisis de datos*'
+
+#### Capítulo '01 - Ingesta'
+
+| Paquete | Función    | Acciones                                           |
+|---------|------------|----------------------------------------------------|
+| **rio** | `import()` | Importa bases de datos de diferentes formatos en R |
+|         | `export()` | Exporta bases de datos de diferentes formatos en R |
+
+### Sección '*Casos de uso*'
+
+#### Capítulo '*A - Pirámide Demográfica*'
+
+| Paquete          | Función              | Acciones                                                          |
+|------------------|----------------------|-------------------------------------------------------------------|
+| **base**         | `str()`              | Muestra la estructura de un objeto de R                           |
+|                  | `summary()`          | Resume el contenido de un objeto                                  |
+|                  | `head()`<br>`tail()` | Muestra las primeras y últimas porciones de un objeto             |
+| **Hmisc**        | `describe()`         | Mejora el formato de salida de las funciones del paquete **base** |
+| **DataExplorer** | `create_report()`    | Crea un informe de exploración de datos para un dataset           |

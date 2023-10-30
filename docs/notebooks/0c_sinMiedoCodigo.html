@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Análisis sistemático de datos con R. Indicadores de calidad del dato - ¿Quién dijo miedo a programar?</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../notebooks/1a_preparacionSistema.html" rel="next">
+<link href="../notebooks/0b_licenciaMaterial.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://hypothes.is/embed.js"></script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../notebooks/0a_contenidoTaller.html">BLOQUE 0 - Descripción del taller</a></li><li class="breadcrumb-item"><a href="../notebooks/0c_sinMiedoCodigo.html">¿Quién dijo miedo a programar?</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Análisis sistemático de datos con R. Indicadores de calidad del dato</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://gitlab.com/calidada4sms/publico/seca2023_tallerR" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-git"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Análisis-sistemático-de-datos-con-R.-Indicadores-de-calidad-del-dato.pdf">
+              <i class="bi bi-bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Análisis-sistemático-de-datos-con-R.-Indicadores-de-calidad-del-dato.epub">
+              <i class="bi bi-bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-1" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-1">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|">
+              <i class="bi bi-bi-facebook pe-1"></i>
+            Facebook
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">¡Bienvenidos!</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">BLOQUE 0 - Descripción del taller</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/0a_contenidoTaller.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Contenido del taller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/0b_licenciaMaterial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Licencia del material</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/0c_sinMiedoCodigo.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">¿Quién dijo miedo a programar?</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">BLOQUE 1 - Instalación</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/1a_preparacionSistema.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preparación del sistema</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/1b_instalacionR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paso 1 - Instalar R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/1c_instalacionRstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paso 2 - Instalación de R Studio</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/1d_instalacionPaquetes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paso 3 - Instalación de los paquetes adicionales de R utilizados en el taller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/1e_descargaMaterial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paso 4 - Descarga de los datos del taller</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">BLOQUE 2 - Fundamentos de R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2a_R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">El lenguaje <code>R</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2b_calculadoraR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">R como calculadora</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2c_scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><em>Scripts</em> de R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2d_tiposDatos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tipos de datos en R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2e_vectores.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vectores</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2f_cambioTipoVariable.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cambio del Tipo de Variable</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2g_flujo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Flujo del código</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2h_funciones.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Funciones</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2i_dataframes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><strong>data.frame</strong></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2j_factores.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">La navaja suiza de R: transformación a factores</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/2k_graficos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Gráficos con ggplot2</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">BLOQUE 3 - Casos de uso</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/3a_piramideDemografica.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A - Pirámides demográficas</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/ejercicios.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ejercicios</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Anexos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/dataQuality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Calidad del análisis de datos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/anexo01_paquetes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo 01 - Paquetes utilizados en el taller</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/anexo02_funciones.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo 02 - Funciones utilizadas en los capítulos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/anexo03_baseDatosPiramideDemografica.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anexo 03 - Cómo fabricar la base de ejemplo para pirámides demográficas</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#material-gratuito-para-formación-en-r" id="toc-material-gratuito-para-formación-en-r" class="nav-link active" data-scroll-target="#material-gratuito-para-formación-en-r">Material gratuito para formación en R</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">¿Quién dijo miedo a programar?</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Programar puede resultar un poco intimidante en un principio, si no se ha hecho antes.</p>
+<p><img src="imagen/fear-eyes.png" class="img-fluid"></p>
+<p>En el pasado este miedo estaba bastante justificado, puesto que era necesario un alto nivel de capacitación técnica para dominar los lenguajes de programación, que solían ser complejos, de bajo nivel y con sintaxis muy técnica.</p>
+<p><img src="imagen/iloveR.jpeg" class="img-fluid"></p>
+<p>R es un lenguaje bastante intuitivo, cuya sintaxis se asemeja bastante al lenguaje inglés hablado. Además, es bastante tolerante con espacios, indentaciones y sangrías, tipados de variables y demás quebraderos de cabeza propios de otros lenguajes más exigentes.</p>
+<p>Hoy en día están disponibles tres grupos de recursos extremadamente útiles, que nos facilitarán avanzar rápidamente en el proceso de aprendizaje del lenguaje R:</p>
+<ul>
+<li>La inmensa cantidad de material gratuito, o a muy bajo coste, de todos los niveles, para obtener formación</li>
+<li>La presencia de una extraordinaria comunidad de usuarios, siempre dispuesta a colaborar</li>
+<li>La disponibilidad universal de las herramientas conversacionales potenciadas por IA, como chatGPT o Bing</li>
+</ul>
+<section id="material-gratuito-para-formación-en-r" class="level3">
+<h3 class="anchored" data-anchor-id="material-gratuito-para-formación-en-r">Material gratuito para formación en R</h3>
+<p>Hay infinidad de material gratuito para formarnos en R, a todos los niveles.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="BÁSICO - Libros gratuitos en español para comenzar con R ">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+BÁSICO - Libros gratuitos en español para comenzar con R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<section id="libros-en-español" class="level4 callout-body-container callout-body">
+<h4 class="anchored" data-anchor-id="libros-en-español">Libros en español</h4>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td><img src="imagen/r4ds.jpg" class="img-fluid"></td>
+<td>Un buen sitio para empezar es el libro <a href="https://es.r4ds.hadley.nz/">R Para Ciencia de Datos</a>, que está traducido al español.<br><br>Este libro contiene los fundamentos del análisis de datos, con un formato muy parecido al de éste taller, utilizando funciones del paquete <strong>tidyverse</strong>. <br><br>Es un libro sencillo, ameno y fácil de seguir.</td>
+</tr>
+<tr class="even">
+<td><img src="imagen/epiR.png" class="img-fluid"></td>
+<td>Un segundo manual, enfocado en el ámbito sanitario, es <a href="https://epirhandbook.com/es/">R para la epidemiología aplicada y la salud pública</a>.<br><br>Es un libro desarrollado por profesionales de la OMS y de Médicos sin fronteras, y tiene como alumno objetivo a alguien sin conocimientos de estadística, programación y R. Permite alcanzar buen nivel, con aplicaciones directas al campo de la salud.</td>
+</tr>
+<tr class="odd">
+<td><img src="imagen/rcookbook.jpg" class="img-fluid"></td>
+<td><a href="https://rc2e.com/">R Cookbook, 2nd Edition <em>(English)</em></a>.<br><br>Está en inglés, pero es muy útil para buscar cómor realizar tareas concretas.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="BÁSICO - Recursos gratuitos de la comunidad R ">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+BÁSICO - Recursos gratuitos de la comunidad R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<section id="la-comunidad-de-r" class="level4 callout-body-container callout-body">
+<h4 class="anchored" data-anchor-id="la-comunidad-de-r">La comunidad de R</h4>
+<p>Es impresionante la cantidad de recursos, redes de apoyo, competiciones, juegos, eventos y buen rollo que destila la comunidad de usuarios de R. Como ejemplos, valgan estos tres:</p>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td><img src="imagen/rladies.png" class="img-fluid" style="width:3in"></td>
+<td><a href="https://rladies.org/">La red global R-ladies</a>, una federación de asociaciones de programadoras de R. Sus recursos educativos son muy buenos</td>
+</tr>
+<tr class="even">
+<td><img src="imagen/rbloggers.png" class="img-fluid" style="width:3in"></td>
+<td><a href="https://www.r-bloggers.com/2021/11/30-day-map-challenge-2021/">R-bloggers</a>. Es una web que reúne los mejores artículos que se publican sobre R a nivel mundial</td>
+</tr>
+<tr class="odd">
+<td><img src="imagen/tidytuesday.png" class="img-fluid" style="width:3in"></td>
+<td>Reto <a href="https://www.tidytuesday.com/">tidytuesday</a>: Cada martes, se lanza un reto para ordenar datos, y se muestran los resultados al final del día. Lo siguen cientos de personas, y es una herramienta educativa de gran calidad, al permitirnos evaluar diversos caminos para un mismo problema.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="BÁSICO - Cursos básicos de bajo coste o gratuitos sobre R ">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+BÁSICO - Cursos básicos de bajo coste o gratuitos sobre R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<section id="cursos-a-bajo-coste-sobre-r" class="level4 callout-body-container callout-body">
+<h4 class="anchored" data-anchor-id="cursos-a-bajo-coste-sobre-r">Cursos a bajo coste sobre R</h4>
+<p>Existen cursos de R de nivel básico y medio, en formato MOOC, gratuitos y en español Por ejemplo</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Docente</th>
+<th>Curso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><img src="imagen/truepositive.jpg" class="img-fluid" alt="Usuario TruePositive"></td>
+<td><a href="https://youtu.be/WCcHcWsMN1o?si=gr5fe088CekSOrAH">Aprende R en 90 minutos</a></td>
+</tr>
+<tr class="even">
+<td><img src="imagen/Logo-UPV.webp" class="img-fluid" style="width:3in" alt="Universitad Politècnica de València"></td>
+<td><a href="https://www.youtube.com/watch?v=s5zliX9EuQ4&amp;list=PL6kQim6ljTJthrG_GLZxrPeuR7qQfEKgv">MOOC Introducción a R.</a></td>
+</tr>
+</tbody>
+</table>
+<p>También, por bajo coste, se puede acceder a plataformas de formación online, como:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Plataforma</th>
+<th>Curso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><img src="imagen/udemy.jpeg" class="img-fluid" style="width:3in"></td>
+<td><a href="https://www.udemy.com/courses/search/?lang=es&amp;q=r+lang&amp;ratings=4.5&amp;sort=relevance&amp;src=ukw">Udemy</a></td>
+</tr>
+<tr class="even">
+<td><img src="imagen/coursera.png" class="img-fluid" style="width:3in"></td>
+<td><a href="https://www.coursera.org/search?query=r+lang&amp;productDifficultyLevel=Beginner&amp;language=Spanish&amp;utm_medium=sem&amp;utm_source=bg&amp;utm_campaign=B2C_EMEA__coursera_FTCOF_courseraplus&amp;campaignid=426115655&amp;adgroupid=1216060348342344&amp;device=c&amp;keyword=coursera&amp;matchtype=e&amp;network=o&amp;devicemodel=&amp;adposition=&amp;creativeid=&amp;hide_mobile_promo=&amp;msclkid=56811bc3c7941d95d6577ef1083135de&amp;utm_term=coursera&amp;utm_content=Coursera+related">Coursera</a></td>
+</tr>
+</tbody>
+</table>
+<p>Las plataformas de formación online, como o ofrecen múltiples cursos, de buena calidad.</p>
+<p>En general, Coursera se enfoca a certificaciones profesionales de Universidades o empresas como IBM, y sus cursos son algo más caros. Por otro lado, Udemy tiene una oferta mucho mayor, y tiene una política de ofertas muy bien distribuida a lo largo del año.</p>
+</section>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="BÁSICO - Uso de herramientas potenciadas con IA como soporte a la programación en R ">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+BÁSICO - Uso de herramientas potenciadas con IA como soporte a la programación en R
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<section id="uso-de-herramientas-potenciadas-con-ia-para-programación" class="level4 callout-body-container callout-body">
+<h4 class="anchored" data-anchor-id="uso-de-herramientas-potenciadas-con-ia-para-programación">Uso de herramientas potenciadas con IA para programación</h4>
+<p>Las IA actuales no nos solucionan todos los problemas, pero sí nos quitan el miedo a la página en blanco. Permiten crear estructuras de pseudocódigo, que podemos utilizar como plantilla.</p>
+<p>Veamos un ejemplo:</p>
+<p>Imaginemos que queremos hacer el siguiente análisis:</p>
+<ul>
+<li>Queremos cargar en R una base de datos que tenemos en formato <code>MS Excel</code></li>
+<li>De esta base, queremos filtrar algunas observaciones</li>
+<li>Tras ese filtro, queremos seleccionar algunas variables y descartar el resto</li>
+<li>Por último, queremos que agrupe los datos según los niveles de un determinado factor y obtener un resumen de los resultados</li>
+<li>Como postre, nos gustaría que el formato de la tabla fuera bonito, para poder reutilizarla.</li>
+</ul>
+<p>Como no sabemos cómo hacerlo, se lo vamos a preguntar a Bing. Atención al estilo de pregunta:</p>
+<p>’ <em>Hello, I am a data scientist. I need r code to load some excel data, filter some observations, select some variables, group them by a factor, and summarise them. I want to get a beautiful table</em>’</p>
+<p>Y aquí está la respuesta</p>
+<p><img src="imagen/bing_sinMiedoCodigo.png" class="img-fluid"></p>
+</section>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../notebooks/0b_licenciaMaterial.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Licencia del material</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../notebooks/1a_preparacionSistema.html" class="pagination-link">
+        <span class="nav-page-text">Preparación del sistema</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

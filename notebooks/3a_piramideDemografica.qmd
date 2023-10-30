@@ -1,0 +1,517 @@
+# A - Pirámides demográficas {.unnumbered}
+
+## Objetivo del caso de uso
+
+Analizar la distribución de los niveles de una variable cualitativa en una población.
+
+-   Realizar una tabla descriptiva que permita saber cómo se distribuyen los niveles en la población, tanto en valor absoluto como en proporción.
+-   Crear gráficos de barras especializados (pirámides demográficas) para mostrar visualmente dicha distribución
+
+## Descripción del ejemplo
+
+Para este ejemplo utilizaremos datos reales del INE: [Población residente en España por fecha, sexo, grupo de edad y nacionalidad](https://www.ine.es/jaxiT3/Tabla.htm?t=56936).
+
+Estos datos han sido modificados mediante el procedimiento descrito en el [Anexo 3](anexo03_baseDatosPiramideDemografica.qmd)
+
+Realizaremos los siguientes análisis:
+
+-   Seleccionaremos una fecha de corte (31-Dic-2021)
+-   Evaluaremos la distribución numérica de la población analizando dos variables categóricas: sexo y nacionalidad de origen
+-   Crearemos un gráfico de pirámide para la población extranjera y nacional, estratificado por sexo
+-   Crearemos una pirámide estratificada por la variable 'continente de origen', para ver la contribución de cada continente al total de población extranjera residente
+
+## Fase 0 - Preparación. Carga e instalación de paquetes
+
+```{r}
+#| output: false
+
+# Configuración general
+source(here::here('notebooks', 'config', 'config.R'))
+
+# Carga / instalación de paquete 'pacman'
+if (!require(pacman)) install.packages('pacman')
+
+# Instalación de los paquetes necesarios para el caso de uso
+pacman::p_load(
+  rio,       # Para importar datos
+  here,      # Para gestión de ubicación de archivos
+  tidyverse, # Limpieza, transformación y creación de gráficos
+  apyramid,  # Paquete específico para la creación de pirámides de edad
+  janitor,   # Tablas y limpieza de datos
+  stringr,   # Manipulación de cadenas de texto
+  reactable, # Capacidad de crear tablas interactivas en formato html
+  Hmisc      # Varias utilidades
+)
+```
+
+## Fase 1 - Ingerir los datos crudos
+
+Podemos utilizar las siguientes funciones para ingerir (y exportar) nuestros datos:
+
+| Paquete | Función    | Acciones                                           |
+|---------|------------|----------------------------------------------------|
+| **rio** | `import()` | Importa bases de datos de diferentes formatos en R |
+|         | `export()` | Exporta bases de datos de diferentes formatos en R |
+
+::: {.callout-tip collapse="true" title="BÁSICO - Importar ficheros con el paquete 'rio' con `rio::import()`"}
+El paquete **rio** es la forma más sencilla de solucionar las necesidades de importación y exportación de ficheros, de una manera sencilla.
+
+La utilizaremos para importar nuestra tabla de datos (disponible en la carpeta `data/lab` del material).
+
+```{r}
+datos <- rio::import(
+  here::here(
+    'data', 'lab', 'datosPiramide.rds'
+    )
+  )
+```
+:::
+
+## Fase 2 - Explorar los datos
+
+La exploración de los datos se puede hacer con las siguientes funciones:
+
+| Paquete          | Función              | Acciones                                                          |
+|------------------|----------------------|-------------------------------------------------------------------|
+| **base**         | `str()`              | Muestra la estructura de un objeto de R                           |
+|                  | `summary()`          | Resume el contenido de un objeto                                  |
+|                  | `head()`<br>`tail()` | Muestra las primeras y últimas porciones de un objeto             |
+| **Hmisc**        | `describe()`         | Mejora el formato de salida de las funciones del paquete **base** |
+| **DataExplorer** | `create_report()`    | Crea un informe de exploración de datos para un dataset           |
+
+::: {.callout-tip collapse="true" title="BÁSICO - Explorar con paquete 'base': `str()`, `summary()`, `head()` y `tail()`"}
+```{r}
+# Estructura del dataframe
+str(datos)
+
+# Resumen descriptivo de los valores
+summary(datos)
+
+# Primeros y últimos valores del dataframe
+head(datos)
+tail(datos)
+```
+:::
+
+::: {.callout-warning collapse="true" title="AVANZADO - Exploración con paquete 'Hmisc': `Hmisc::describe()`"}
+Podemos obtener una información más estructurada con la función `describe()` del paquete **Hmisc**
+
+```{r}
+Hmisc::describe(datos)
+```
+:::
+
+::: {.callout-important collapse="true" title="EXPERTO - Exploración con paquete 'DataExplorer': `DataExplorer::create_report()`"}
+La función `create_report()` del paquete **DataExplorer** crea un informe avanzado para un dataset, que incluye: clases de variables, análisis de datos faltantes, correlación, o análisis de componentes principales, entre otros elementos.
+
+```{r}
+#| eval: false
+
+DataExplorer::create_report(datos)
+```
+:::
+
+## Fase 3 - Limpieza de los datos
+
+El proceso detallado de limpieza de los datos se puede ver en el Anexo 03
+
+## Fase 4 - Transformación de los datos para el análisis
+
+El proceso detallado de limpieza de los datos se puede ver en el Anexo 03
+
+## Fase 5 - Análisis
+
+### Tabla resumen
+
+El proceso de crear tablas resumen sigue siempre el mismo patrón
+
+-   FILTRAR los datos de interés: en nuestro ejemplo, periodo 1 de enero de 2021
+-   AGRUPAR por la variable que queremos analizar: en nuestro ejemplo, nacionalidad y sexo
+-   RESUMIR el valor de interés: en nuestro caso, número total de individuos
+-   (OPCIONAL): reordenar para facilitar la visualización de los datos
+
+```{r}
+tabla_1 <- datos |> 
+  
+  # FILTRAR los datos de interés: en nuestro ejemplo, periodo 1 de enero de 2021
+  dplyr::filter(
+    periodo_fct == '1 de enero de 2021'
+  ) |> 
+  
+  # AGRUPAR por la variable que queremos analizar: en nuestro ejemplo, nacionalidad, raza y sexo
+  dplyr::group_by(
+    nacionalidad_fct,
+    raza,
+    sexo_fct
+  ) |> 
+  
+  # RESUMIR el valor de interés: en nuestro caso, número total de individuos
+  dplyr::summarise(
+    n = sum(total_numeric)
+  ) |> 
+  
+  # (OPCIONAL): reordenar para facilitar la visualización de los datos
+  tidyr::pivot_wider(
+    names_from = sexo_fct,
+    values_from = n
+  )
+
+# Visualizamos el contenido
+view(tabla_1)
+```
+
+Si queremos añadir interactividad a la tabla, para la salida en formato html, podemos utilizar las funciones del paquete **reactable**
+
+```{r}
+reactable::reactable(tabla_1)
+```
+
+### Pirámide de edad clásica
+
+Objetivo:
+
+-   Crear una pirámide de edad clásica para un conjunto de datos
+
+Para el ejemplo, seleccionaremos la nacionalidad Española, y periodo igual a 1-Enero-2021
+
+```{r}
+datos |> 
+  dplyr::filter(
+    nacionalidad_fct == 'Española',
+    periodo_fct == '1 de enero de 2021'
+  ) |> 
+  apyramid::age_pyramid(
+    age_group = grupo_quinquenal_de_edad_fct,
+    split_by = sexo_fct,
+    count = total_numeric
+  ) + 
+  ggplot2::ggtitle(
+    label = 'Población residente en España por sexo y grupo de edad',
+    subtitle = 'Nacionalidad Española. Periodo de evaluación: 1-Enero-2021'
+  ) +
+  ggplot2::theme_bw() +
+  ggplot2::theme(
+    legend.position = 'bottom',
+    axis.text.x = ggplot2::element_text(
+      angle = 90, 
+      vjust = 0.5, 
+      hjust = 1, 
+      size = 8
+    ),
+    axis.text.y = ggplot2::element_text(size = 8)
+  ) +
+  ggplot2::labs(
+    fill = 'Sexo'
+  ) +
+  ggplot2::xlab(label = 'Grupo de edad') +
+  ggplot2::ylab(label = 'Número de individuos')
+```
+
+### Pirámide para factores con más de dos niveles
+
+Vamos a crear una nueva tabla, filtrando los datos por continentes, para saber en qué medida la población extranjera contribuye a la población residente total de España.
+
+```{r}
+# Creación del vector con los países de interés
+# Pondremos un comentario '#' delante de los países que no nos interesen
+paisesSeleccionados <- c(
+  #"Alemania",
+  #"Apátridas",
+  #"Argelia",
+  #"Argentina",
+  #"Bangladesh",
+  #"Bélgica",
+  #"Bolivia",
+  #"Brasil",
+  #"Bulgaria",
+  #"Canadá",
+  #"Chile",
+  #"China",
+  #"Colombia",
+  #"Cuba",
+  "De Africa",
+  "De América del Norte",
+  "De Asia",
+  "De Centro América y Caribe",
+  "De Oceanía",
+  "De Sudamérica",
+  #"Dinamarca",
+  #"Ecuador",
+  #"Española",
+  #"Estados Unidos de América",
+  #"Extranjera",
+  #"Filipinas",
+  #"Finlandia",
+  #"Francia",
+  #"Gambia",
+  #"Ghana",
+  #"Guinea",
+  #"Guinea Ecuatorial",
+  #"Honduras",
+  #"India",
+  #"Irlanda",
+  #"Italia",
+  #"Lituania",
+  #"Mali",
+  #"Marruecos",
+  #"Mauritania",
+  #"México",
+  #"Moldavia",
+  #"Nicaragua",
+  #"Nigeria",
+  #"Noruega",
+  #"Otro país de África",
+  #"Otro país de Asia",
+  #"Otro país de Centro América y Caribe",
+  #"Otro país de la Unión Europea sin España",
+  #"Otro país de Sudamérica",
+  #"Otro país del resto de Europa",
+  "País de Europa menos UE27_2020",
+  #"País de Europa menos UE28",
+  "País de la UE27_2020 sin España"#,
+  #"País de la UE28 sin España",
+  #"Países Bajos",
+  #"Pakistán",
+  #"Paraguay",
+  #"Perú",
+  #"Polonia",
+  #"Portugal",
+  #"Reino Unido",
+  #"República Dominicana",
+  #"Rumanía",
+  #"Rusia",
+  #"Senegal",
+  #"Suecia",
+  #"Suiza",
+  #"Ucrania",
+  #"Uruguay",
+  #"Venezuela"
+)
+# Filtramos la base, para dejar únicamente las observaciones de los países de interés
+tmp4 <- datos |> 
+  dplyr::filter(
+    nacionalidad_fct %in% paisesSeleccionados
+  ) 
+  
+# Debemos renivelar el factor, para que no aparezcan los niveles filtrados
+tmp4$nacionalidad_fct <- factor(
+  x = tmp4$nacionalidad,
+  levels = paisesSeleccionados,
+  labels = c(
+    'África',
+    'América del Norte',
+    'Asia',
+    'América central',
+    'Oceanía',
+    'Sudamérica',
+    'Europa - países no UE27',
+    'Europa - UE27 sin ES'
+  )
+  )
+levels(tmp4$nacionalidad_fct)
+```
+
+Podemos repetir la pirámide sencilla, para ver cómo se distribuyen los grupos de edad en esta subpoblación:
+
+```{r}
+tmp4 |> 
+  dplyr::filter(
+    periodo_fct == '1 de enero de 2021'
+  ) |> 
+apyramid::age_pyramid(
+  age_group = grupo_quinquenal_de_edad_fct,
+  split_by = sexo_fct,
+  count = total_numeric,
+  vertical_lines = FALSE
+) + 
+  ggplot2::ggtitle(
+    label = 'Población extranjera residente en España por sexo y grupo de edad',
+    subtitle = 'Periodo de evaluación: 1-Enero-2021'
+  ) +
+  ggplot2::theme_bw() +
+  ggplot2::theme(
+    legend.position = 'bottom',
+    axis.text.x = ggplot2::element_text(
+      angle = 90, 
+      vjust = 0.5, 
+      hjust = 1, 
+      size = 8
+      ),
+    axis.text.y = ggplot2::element_text(size = 8)
+  ) +
+  ggplot2::labs(
+    fill = 'Sexo'
+  ) +
+  ggplot2::xlab(label = 'Grupo de edad') +
+  ggplot2::ylab(label = 'Número de individuos')
+```
+
+Podría interesarnos segregar el continente del que proviene la población extranjera residente en España. Para ello, vamos a crear un tipo especial de gráfico, la pirámide desagregada en función de los niveles de una categoría.
+
+De nuevo, filtraremos la población de 1-Ene-2021
+
+Podemos evaluar qué proporción de población extranjera residente aporta cada continente,
+
+```{r}
+tmp4 |> 
+  dplyr::filter(
+    periodo_fct == '1 de enero de 2021'
+  ) |> 
+apyramid::age_pyramid(
+  age_group = grupo_quinquenal_de_edad_fct,
+  split_by = nacionalidad_fct,
+  count = total_numeric
+) + 
+  ggplot2::ggtitle(
+    label = 'Población extranjera residente en España, por continente de origen',
+    subtitle = 'Periodo de evaluación: 1-Enero-2021'
+  ) +
+  ggplot2::theme_bw() +
+  ggplot2::theme(
+    legend.position = 'bottom',
+    axis.text.x = ggplot2::element_text(
+      angle = 90, 
+      vjust = 0.5, 
+      hjust = 1, 
+      size = 6
+      ),
+    axis.text.y = ggplot2::element_text(size = 3)
+  ) +
+  ggplot2::labs(
+    fill = ggplot2::element_blank()
+  ) +
+  ggplot2::xlab(label = 'Grupo de edad') +
+  ggplot2::ylab(label = 'Número de individuos')
+
+```
+
+O evaluar de qué continentes provienen las razas
+
+```{r}
+tmp4 |> 
+  dplyr::filter(
+    periodo_fct == '1 de enero de 2021'
+  ) |> 
+apyramid::age_pyramid(
+  age_group = raza,
+  split_by = nacionalidad_fct,
+  count = total_numeric
+) + 
+  ggplot2::ggtitle(
+    label = 'Población extranjera residente en España, por continente de origen',
+    subtitle = 'Periodo de evaluación: 1-Enero-2021'
+  ) +
+  ggplot2::theme_bw() +
+  ggplot2::theme(
+    legend.position = 'bottom',
+    axis.text.x = ggplot2::element_text(
+      angle = 90, 
+      vjust = 0.5, 
+      hjust = 1, 
+      size = 8
+      ),
+    axis.text.y = ggplot2::element_text(size = 8)
+  ) +
+  ggplot2::labs(
+    fill = ggplot2::element_blank()
+  ) +
+  ggplot2::xlab(label = 'Grupo de edad') +
+  ggplot2::ylab(label = 'Número de individuos')
+
+```
+
+O la distribución por sexos de una determinada raza
+
+```{r}
+tmp4 |> 
+  dplyr::filter(
+    periodo_fct == '1 de enero de 2021',
+    raza == 'Elfo'
+  ) |> 
+apyramid::age_pyramid(
+  age_group = grupo_quinquenal_de_edad_fct,
+  split_by = sexo_fct,
+  count = total_numeric
+) + 
+  ggplot2::ggtitle(
+    label = 'Pirámide de edad de los elfos',
+    subtitle = 'Periodo de evaluación: 1-Enero-2021'
+  ) +
+  ggplot2::theme_bw() +
+  ggplot2::theme(
+    legend.position = 'bottom',
+    axis.text.x = ggplot2::element_text(
+      angle = 90, 
+      vjust = 0.5, 
+      hjust = 1, 
+      size = 8
+      ),
+    axis.text.y = ggplot2::element_text(size = 8)
+  ) +
+  ggplot2::labs(
+    fill = ggplot2::element_blank()
+  ) +
+  ggplot2::xlab(label = 'Grupo de edad') +
+  ggplot2::ylab(label = 'Número de individuos')
+```
+
+### Evolucion temporal de la población, por razas
+
+Podemos analizar la evolución temporal de la población, por razas
+
+```{r}
+tabla2 <- datos |> 
+  dplyr::group_by(
+    periodo_fct,
+    raza
+  ) |> 
+  dplyr::summarise(
+    n = sum(total_numeric)
+  ) |> 
+  tidyr::pivot_wider(
+    names_from = raza,
+    values_from = n
+  )
+tabla2
+```
+
+```{r}
+datos |> 
+  dplyr::group_by(
+    periodo_fct,
+    raza
+  ) |> 
+  dplyr::summarise(
+    n = sum(total_numeric)
+  ) |> 
+  ggplot2::ggplot(
+    ggplot2::aes(
+      x = periodo_fct,
+      y = n,
+      fill = raza
+    ) 
+  ) + ggplot2::geom_col()
+```
+
+```{r}
+## Serie temporal 
+datos_filtradosElfos <- datos |> 
+  dplyr::filter(
+    raza == 'Humano'
+  ) |> 
+  dplyr::group_by(fechaPeriodo) |> 
+  dplyr::summarise(n = sum(total_numeric))
+ts_data <- ts(
+  datos_filtradosElfos$n, 
+  start = c(2002, 1), 
+  frequency = 2
+  ) |> 
+  decompose() |> 
+  plot()
+
+
+```
+
+## ¡Más información!
+
+Puede obtenerse información complementaria sobre la creación de pirámides demográficas en el capítulo 33 del [*Epidemiologist R Handbook*](https://epirhandbook.com/en/demographic-pyramids-and-likert-scales.html) [@batra2021]

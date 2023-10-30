@@ -1,0 +1,102 @@
+## Paso 3 - Instalación de los paquetes adicionales de R utilizados en el taller {.unnumbered}
+
+
+El paquete base de R puede ejecutar una gran cantidad de análisis, sin necesidad de instalar nada más. Sin embargo, una de las fortalezas de R es poder ampliar sus capacidades de análisis instalando paquetes adicionales sobre el sistema base.
+
+::: {layout-ncol=2 layout-nrow=2}
+
+![](imagen/CRANlogo.png){width=2in}
+
+![](imagen/bioconductor.jpeg){width=3.5in}
+
+![](imagen/gitlab.jpeg){width=2in}
+
+![](imagen/github.png){width=3.5in}
+
+:::
+
+La inmensa mayoría de estos paquetes son gratuitos. Esto es uno de los puntos que diferencia a R de otros paquetes comerciales, como Stata, Minitab o SSPS, y por el que lo recomendamos encarecidamente.
+
+Instalaremos todos los paquetes necesarios para el taller ejecutando el siguiente script de código.
+
+```{r}
+#| label: globalConfiguration
+#| output: false
+#| message: false
+
+# Carga / instala el paquete 'here'
+if (!require(here)) install.packages('here')
+
+# Ejecución del script que instala todos los paquetes necesarios
+source(here::here('notebooks', 'config', 'config.R'))
+```
+
+::: {.callout-tip collapse="true" title="BÁSICO - Instalación manual de paquetes con `install.packages()`"}
+
+### Instalar paquetes - `install.packages()`
+
+Para instalar paquetes de R, utilizaremos la función `install.packages()` desde la terminal de R. El nombre de los paquetes puede ir entre comillas dobles (`"`) o sencillas (`'`).
+
+Por ejemplo, el siguiente código instala el paquete **tidyverse** que utilizaremos en el taller:
+
+```{r}
+#| output: false
+
+# Instalación del paquete 'tidyverse'
+install.packages('tidyverse')
+```
+:::
+
+::: {.callout-tip collapse="true" title="BÁSICO - Carga de paquetes con `library()`"}
+### Activar paquetes - `library()`
+
+Instalar un paquete es parecido a ir al supermercado, comprar un ingrediente y dejarlo en la despensa para cuando sea necesario. Si queremos cocinar con él, deberemos cogerlo e incorporarlo en la receta.
+
+Si echamos un vistazo a nuestra 'despensa' de paquetes, en la ventana inferior derecha, pestaña '*Packages*', y buscamos nuestro paquete recién instalado, veremos que la casilla de verificación está desmarcada, indicando que no está cargado en memoria.
+
+![](imagen/instalacionPaquetes_instaladoNoCargado.png)
+
+Para poder utilizar todos los datos, funciones y objetos incluidos en un paquete, debemos cargarlo en memoria utilizando la función `library()`, o marcando la casilla de verificación de la ventana anterior.
+
+```{r}
+#| eval: false
+
+# Carga en memoria del paquete 'tidyverse'
+library(tidyverse)
+```
+
+Tras ejecutar la función, comprobaremos que se marca automáticamente la casilla de verificación.
+:::
+
+::: {.callout-warning collapse="true" title="AVANZADO - Solucionar conflictos entre paquetes con funciones con el mismo nombre con la sintaxis `paquete::función()`"}
+
+### Dependencias entre paquetes.
+
+Cuando hemos utilizado la función `library(tidyverse)` ha activado la casilla de verificación de **tidyverse**, pero también también la de otros paquetes que no habíamos indicado, como **tidyr** o **tibble**. Esto es debido a que **tidyverse** *depende* de que estos paquetes estén activos para poder funcionar correctamente, y cualquier acción sobre este paquete suele desencadenar acciones en cascada sobre los demás.
+
+Tras ejecutar la función, comprobaremos que se marca automáticamente la casilla de verificación.
+
+![](imagen/instalacionPaquetes_instaladoCargado.png)
+
+La activación del paquete **tidyverse** ha levantado una advertencia: algunas funciones de **tidyverse** se llaman igual que otras funciones ya activas.
+
+![](imagen/cargaPaquetes_conflictos.png)
+
+Esto no es necesariamente un problema, puesto que en muchos casos los paquetes se desarrollan para mejorar el comportamiento de funciones existentes.
+
+R soluciona el conflicto, asumiendo que lo que queremos es usar las nuevas funciones, por lo que, por defecto desactivará las funciones anteriores y utilizará las funciones recién cargadas.
+
+Para poder tener más control sobre qué función concreta se utilizar, podemos utilizar la sintaxis `paquete::función()`
+
+```{r}
+#| eval: false
+
+# Uso de la función 'filter()' del paquete dplyr
+dplyr::filter()
+
+# Uso de la función 'filter()' del paquete stats
+stats::filter()
+```
+
+La totalidad del código de este taller utiliza esta notación, con intención docente, para que el alumno pueda identificar de qué paquete proviene las funciones que está utilizando. Sin embargo, si no existe conflicto, no es necesario señalar el paquete del que proviene la función cada vez que se utiliza.
+:::

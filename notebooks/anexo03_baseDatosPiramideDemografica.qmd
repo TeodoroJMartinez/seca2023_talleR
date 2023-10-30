@@ -1,0 +1,430 @@
+# Anexo 03 - Cómo fabricar la base de ejemplo para pirámides demográficas {.unnumbered}
+
+## Fase 1 - Ingerir los datos crudos
+
+Importamos la tabla de datos (ya descargada en el material).
+
+```{r}
+datos <- rio::import(
+  here::here(
+    'data', 'raw', 'poblacionResidente_xFecha-Sexo-GrupoEdad-Nacionalidad.csv'
+  )
+)
+```
+
+## Fase 2 - Explorar los datos
+
+La exploración de los datos se puede hacer con las siguientes funciones:
+
+| Paquete          | Función              | Acciones                                                          |
+|------------------|----------------------|-------------------------------------------------------------------|
+| **base**         | `str()`              | Muestra la estructura de un objeto de R                           |
+|                  | `summary()`          | Resume el contenido de un objeto                                  |
+|                  | `head()`<br>`tail()` | Muestra las primeras y últimas porciones de un objeto             |
+| **Hmisc**        | `describe()`         | Mejora el formato de salida de las funciones del paquete **base** |
+| **DataExplorer** | `create_report()`    | Crea un informe de exploración de datos para un dataset           |
+
+::: {.callout-tip collapse="true" title="BÁSICO - Explorar con paquete 'base': `str()`, `summary()`, `head()` y `tail()`"}
+```{r}
+# Estructura del dataframe
+str(datos)
+
+# Resumen descriptivo de los valores
+summary(datos)
+
+# Primeros y últimos valores del dataframe
+head(datos)
+tail(datos)
+```
+:::
+
+::: {.callout-warning collapse="true" title="AVANZADO - Exploración con paquete 'Hmisc': `Hmisc::describe()`"}
+Podemos obtener una información más estructurada con la función `describe()` del paquete **Hmisc**
+
+```{r}
+Hmisc::describe(datos)
+```
+:::
+
+::: {.callout-important collapse="true" title="EXPERTO - Exploración con paquete 'DataExplorer': `DataExplorer::create_report()`"}
+La función `create_report()` del paquete **DataExplorer** crea un informe avanzado para un dataset, que incluye: clases de variables, análisis de datos faltantes, correlación, o análisis de componentes principales, entre otros elementos.
+
+```{r}
+#| eval: false
+
+DataExplorer::create_report(datos)
+```
+:::
+
+## Fase 3 - Limpieza de los datos
+
+Para la limpieza de los datos se pueden utilizar las siguientes funciones:
+
+| Paquete     | Función         | Acciones                                                      |
+|-------------|-----------------|---------------------------------------------------------------|
+| **janitor** | `clean_names()` | Limpia los nombres de un objeto (habitualmente, un data.frame |
+
+### Normalización del nombre de las variables
+
+::: {.callout-tip collapse="true" title="BÁSICO - Normalizar el nombre de las variables con la función `janitor::clean_names()`"}
+El paquete **janitor** tiene un conjunto de funciones muy útiles para muchos usos. Una de las más utilizadas es `clean_names()`, que permite convertir los nombres de las variables a un formato más amable para la computación.
+
+```{r}
+datosPiramide <- datos |> 
+  janitor::clean_names()
+```
+:::
+
+### Eliminación de datos que no interesan
+
+Vamos a eliminar de los datos crudos los siguientes elementos:
+
+-   Filas que no contienen datos en la variable `total`
+-   Filas en las existe un valor '..' en la variable `total`
+-   Filas en las que la variable `nacionalidad` tiene el valor '*Total*'
+-   Filas en las que la variable `grupo_quinquenal_de_edad` tiene el valor '*Todas las edades*'
+-   Filas en las que la variable `sexo` tiene el valor '*Total*'
+-   Filas en las que la variable `nacionalidad` contiene el valor de un país individual, a excepción de el valor `España`.
+
+::: {.callout-tip collapse="true" title="BÁSICO - Filtrar observaciones utilizando `dplyr::filter()`"}
+El método más eficiente para filtrar es combinar todos los filtros dentro de la función `dplyr::filter()`. Habitualmente es el que más se utiliza, pero para comprenderlo a veces es necesario haber practicado previamente los dos métodos que están incluidos en la nota precedente. El resultado es el mismo que obtendríamos con cualquiera de los otros métodos.
+
+```{r}
+# Eliminación de los datos datos que no interesan
+
+datosPiramide <- datosPiramide |> 
+  dplyr::filter(
+    total != '',
+    total != '..',
+    grupo_quinquenal_de_edad != 'Todas las edades',
+    nacionalidad != 'Total',
+    sexo != 'Total'
+  )
+
+
+```
+:::
+
+::: {.callout-warning collapse="true" title="AVANZADO - Filtrar las observaciones cuyo valor coincide con un conjunto de valores prefijado"}
+Para eliminar los países que no deseamos, utilizaremos el siguiente método:
+
+-   Crearemos un vector con los países que queremos conservar
+-   Filtraremos las observaciones cuyo valor en la variable `nacionalidad` no esté incluido entre los valores deseados.
+
+```{r}
+# Definimos el vector de países que queremos conservar
+paisesDeseados <- c(
+  # "Alemania",
+  # "Apátridas",
+  # "Argelia",
+  # "Argentina",
+  # "Bangladesh",
+  # "Bélgica",
+  # "Bolivia",
+  # "Brasil",
+  # "Bulgaria",
+  # "Canadá",
+  # "Chile",
+  # "China",
+  # "Colombia",
+  # "Cuba",
+  "De Africa",
+  "De América del Norte",
+  "De Asia",
+  "De Centro América y Caribe",
+  "De Oceanía",
+  "De Sudamérica",
+  # "Dinamarca",
+  # "Ecuador",
+  "Española",
+  # "Estados Unidos de América",
+  # "Extranjera",
+  # "Filipinas",
+  # "Finlandia",
+  # "Francia",
+  # "Gambia",
+  # "Ghana",
+  # "Guinea",
+  # "Guinea Ecuatorial",
+  # "Honduras",
+  # "India",
+  # "Irlanda",
+  # "Italia",
+  # "Lituania",
+  # "Mali",
+  # "Marruecos",
+  # "Mauritania",
+  # "México",
+  # "Moldavia",
+  # "Nicaragua",
+  # "Nigeria",
+  # "Noruega",
+  # "Otro país de África",
+  # "Otro país de Asia",
+  # "Otro país de Centro América y Caribe",
+  # "Otro país de la Unión Europea sin España",
+  # "Otro país de Sudamérica",
+  # "Otro país del resto de Europa",
+  # "País de Europa menos UE27_2020",
+  "País de Europa menos UE28",
+  #"País de la UE27_2020 sin España",
+  "País de la UE28 sin España" #,
+  # "Países Bajos",
+  # "Pakistán",
+  # "Paraguay",
+  # "Perú",
+  # "Polonia",
+  # "Portugal",
+  # "Reino Unido",
+  # "República Dominicana",
+  # "Rumanía",
+  # "Rusia",
+  # "Senegal",
+  # "Suecia",
+  # "Suiza",
+  # "Ucrania",
+  # "Uruguay",
+  # "Venezuela"
+)
+
+# Eliminación de los datos de países no incluidos en el vector 'paisesDeseados'
+datosPiramide <- datosPiramide[datosPiramide$nacionalidad %in% paisesDeseados, ]
+
+rm(paisesDeseados)
+```
+:::
+
+### Transformación de datos tipo **character** a **numeric**
+
+::: {.callout-tip collapse="true" title="BÁSICO - Transformar datos tipo 'character' a 'numeric' con `as.numeric()`"}
+Cuando el vector tipo **character** que queremos convertir a tipo **numeric** sólo contiene números, sin símbolos como `€`, entonces puede hacerse la conversión directamente utilizado la función `as.numeric()`
+
+```{r}
+# Vector original de tipo character. Los valores están entre comillas
+vector <- c('12312341', '1313', '1491', '1.38')
+vector
+class(vector)
+
+# Vector transformado de tipo numeric
+vector_numeric <- as.numeric(vector)
+vector_numeric
+class(vector_numeric)
+```
+:::
+
+::: {.callout-warning collapse="true" title="AVANZADO - Limpiar los caracteres indeseados antes de convertir variables a formato numérico"}
+Cuando queremos convertir datos tipo **character** a **numeric**, debemos tener cuidado con los signos ortográficos de separación de miles y decimales.
+
+```{r}
+# Convertimos los datos tipo character a numeric
+datosPiramide$total_numeric <- readr::parse_number(
+  datosPiramide$total, 
+  locale = readr::locale(decimal_mark = ",", grouping_mark = ".")
+  )
+# Eliminamos la variable original
+datosPiramide$total <- NULL
+```
+:::
+
+## Fase 4 - Transformación de los datos para el análisis
+
+### Transformación de la variable `sexo` en factor
+
+La variable sexo está en formato *caracter*, pero es una categoría. La transformaremos en un factor con la función `as.factor()`
+
+```{r}
+datosPiramide$sexo_fct <- as.factor(datosPiramide$sexo)
+datosPiramide$sexo <- NULL
+```
+
+### Transformacion de variables **character** a **factor**
+
+#### Variable `nacionalidad`
+
+Convertiremos la variable con la función `as.factor()`
+
+```{r}
+datosPiramide$nacionalidad_fct <- as.factor(datosPiramide$nacionalidad)
+levels(datosPiramide$nacionalidad_fct)
+
+datosPiramide$nacionalidad <- NULL
+```
+
+#### Variable `grupo_quinquenal_de_edad`
+
+Los grupos de edad originales están en formato texto. Necesitamos hacer las siguientes transformaciones:
+
+-   Crear un vector de grupos de edad ordenado según nos interese
+-   Convertir el dato original del tipo 'character' al tipo 'factor'
+
+Si convertiésemos directamente la variable a tipo factor se quedaría desordenada. Para comprobarlo, utilizaremos una combinación de funciones muy frecuente: `levels(as.factor())`
+
+```{r}
+niveles_sinOrdenar <- levels(as.factor(datosPiramide$grupo_quinquenal_de_edad))
+niveles_sinOrdenar
+```
+
+Por tanto, tenemos que indicarle a R cómo nos gustaría ordenar los factores cuando lo convirtamos a un factor. Para ello, crearemos un vector de orden haciendo uso de la función `c()`
+
+```{r}
+niveles_ordenados <- niveles_sinOrdenar[c(2, 11, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 1)]
+niveles_ordenados
+```
+
+Ahora, podemos utilizar la función `factor()` para convertir la variable original al formato deseado
+
+```{r}
+datosPiramide$grupo_quinquenal_de_edad_fct <- factor(
+  x = datosPiramide$grupo_quinquenal_de_edad,
+  levels = niveles_ordenados,
+  ordered = TRUE
+)
+```
+
+Podemos comprobar que la transformación ha sido correcta, porque los valores de `grupo_quinquenal_de_edad` son los mismos que los de la nueva variable
+
+```{r}
+View(datosPiramide)
+```
+
+Sin embargo, la nueva variable permite una mejor exploración del contenido del dataset:
+
+```{r}
+# Estructura del dataframe
+str(datosPiramide)
+
+# Resumen descriptivo de los valores
+summary(datosPiramide)
+
+# Primeros y últimos valores del dataframe
+head(datosPiramide)
+tail(datosPiramide)
+```
+
+Una vez revisada, podemos eliminar la variable original, y limpiar las variables intermedias
+
+```{r}
+datosPiramide$grupo_quinquenal_de_edad <- NULL
+rm(niveles_ordenados)
+rm(niveles_sinOrdenar)
+```
+
+### Transformacion de la variable `periodo` en factor
+
+La transformación de la variable `periodo` en factor requiere un proceso análogo al descrito en la variable `grupo_quinquenal_de_edad`:
+
+-   Crear un vector de periodos ordenado según nos interese
+-   Convertir el dato original del tipo 'character' al tipo 'factor'
+
+Haremos todo el proceso en el mismo *chunk* de código:
+
+```{r}
+# Creamos un vector temporal de niveles sin ordenar
+niveles_sinOrdenar <- levels(as.factor(datosPiramide$periodo))
+niveles_sinOrdenar
+
+# Creamos un vector de orden
+niveles_ordenados <- niveles_sinOrdenar[c(
+  1, 21, 2, 22, 3, 23, 4, 24, 5, 25,
+  6, 26, 7, 27, 8, 28, 9, 29, 10, 30,
+  11, 31, 12, 32, 13, 33, 14, 34, 15,
+  35, 16, 36, 17, 37, 18, 38, 19, 39, 20
+  )]
+
+niveles_ordenados
+
+# factorizamos la variable original
+datosPiramide$periodo_fct <- factor(
+  datosPiramide$periodo,
+  levels = niveles_ordenados,
+  ordered = TRUE
+)
+
+# Inspeccionamos que la transformación ha ido bien
+View(datosPiramide)
+
+# Creamos una nueva variable de clase fecha para series temporales
+datosPiramide$fechaPeriodo <- dplyr::case_when(
+   datosPiramide$periodo == "1 de enero de 2002" ~ '01-01-2002',
+   datosPiramide$periodo == "1 de julio de 2002" ~ '01-07-2002',
+   datosPiramide$periodo == "1 de enero de 2003" ~ '01-01-2003',
+   datosPiramide$periodo == "1 de julio de 2003" ~ '01-07-2003',
+   datosPiramide$periodo == "1 de enero de 2004" ~ '01-01-2004',
+   datosPiramide$periodo == "1 de julio de 2004" ~ '01-01-2004',
+   datosPiramide$periodo == "1 de enero de 2005" ~ '01-01-2005',
+   datosPiramide$periodo == "1 de julio de 2005" ~ '01-07-2005',
+   datosPiramide$periodo == "1 de enero de 2006" ~ '01-01-2006',
+  datosPiramide$periodo ==  "1 de julio de 2006" ~ '01-07-2006',
+  datosPiramide$periodo ==  "1 de enero de 2007" ~ '01-01-2007',
+  datosPiramide$periodo ==  "1 de julio de 2007" ~ '01-07-2007',
+  datosPiramide$periodo ==  "1 de enero de 2008" ~ '01-01-2008',
+  datosPiramide$periodo ==  "1 de julio de 2008" ~ '01-07-2008',
+  datosPiramide$periodo ==  "1 de enero de 2009" ~ '01-01-2009',
+  datosPiramide$periodo ==  "1 de julio de 2009" ~ '01-07-2009',
+  datosPiramide$periodo ==  "1 de enero de 2010" ~ '01-01-2010',
+  datosPiramide$periodo ==  "1 de julio de 2010" ~ '01-07-2010',
+  datosPiramide$periodo ==  "1 de enero de 2011" ~ '01-01-2011',
+  datosPiramide$periodo ==  "1 de julio de 2011" ~ '01-07-2011',
+  datosPiramide$periodo ==  "1 de enero de 2012" ~ '01-01-2012',
+  datosPiramide$periodo ==  "1 de julio de 2012" ~ '01-07-2012',
+  datosPiramide$periodo ==  "1 de enero de 2013" ~ '01-01-2013',
+  datosPiramide$periodo ==  "1 de julio de 2013" ~ '01-07-2013',
+  datosPiramide$periodo ==  "1 de enero de 2014" ~ '01-01-2014',
+  datosPiramide$periodo ==  "1 de julio de 2014" ~ '01-07-2014',
+  datosPiramide$periodo ==  "1 de enero de 2015" ~ '01-01-2015',
+  datosPiramide$periodo ==  "1 de julio de 2015" ~ '01-07-2015',
+  datosPiramide$periodo ==  "1 de enero de 2016" ~ '01-01-2016',
+  datosPiramide$periodo ==  "1 de julio de 2016" ~ '01-07-2016',
+  datosPiramide$periodo ==  "1 de enero de 2017" ~ '01-01-2017',
+  datosPiramide$periodo ==  "1 de julio de 2017" ~ '01-07-2017',
+  datosPiramide$periodo ==  "1 de enero de 2018" ~ '01-01-2018',
+  datosPiramide$periodo ==  "1 de julio de 2018" ~ '01-07-2018',
+  datosPiramide$periodo ==  "1 de enero de 2019" ~ '01-01-2019',
+  datosPiramide$periodo ==  "1 de julio de 2019" ~ '01-07-2019',
+  datosPiramide$periodo ==  "1 de enero de 2020" ~ '01-01-2020',
+  datosPiramide$periodo ==  "1 de julio de 2020" ~ '01-07-2020',
+  datosPiramide$periodo ==  "1 de enero de 2021" ~ '01-01-2021'
+) |> 
+  lubridate::dmy()
+
+# Anulamos la variable original
+datosPiramide$periodo <- NULL
+
+```
+
+### Renivelado de factores
+
+Vamos a simular una migración de décadas a nuestro país. No tenemos ni idea de qué razas han venido, ni qué estructura de población ha surgido tras la migración.
+
+```{r}
+# Vector aleatorio de migración de razas
+vectorRazas <- sample(
+  x = c('Humano', 'Elfo', 'Hobbit', 'Enano','Orco', 'Ent', 'Troll'),
+  size = 7,
+  replace = FALSE
+)
+vectorProbabilidadMigracion <- c(
+  0.8, 0.2, 0.05, 0.3, 0.4, 0.1, 0.2
+)
+
+datosPiramide$raza <- sample(
+  x = vectorRazas,
+  size = nrow(datosPiramide), 
+  replace = TRUE,
+  prob = vectorProbabilidadMigracion
+) |> 
+  as.factor()
+
+```
+
+### Exportamos los datos
+
+```{r}
+readr::write_rds(
+  x = datosPiramide,
+  file = here::here(
+    'data', 'lab', 'datosPiramide.rds'
+  )
+)
+
+```

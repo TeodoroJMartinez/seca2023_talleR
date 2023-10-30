@@ -1,0 +1,61 @@
+### La navaja suiza de R: transformación a factores {.unnumbered}
+
+Los factores son un tipo de objeto que está a caballo entre las variables de tipo **character** y las de tipo **integer**, con lo mejor de los dos mundos:
+
++ Son variables que se codifican internamente como enteros, por lo que la computación con elllos es muy eficiente
++ Para el usuario, muestran etiquetas de tipo texto, que facilitan la visualización en tablas y gráficos
+
+Si las variables tipo **character** recogen categorías (sexo, raza, centro de salud, grupo de edad, nivel de satisfacción....) en la mayoría de los casos será adcuado convertirlo a **factor**.
+
+Utilizaremos la base de datos `titanic` que hemos comentado en otro capítulo
+```{r}
+titanic <- rio::import(
+  here::here(
+    'data', 'raw', 'titanic_dataset.csv'
+  )
+)
+```
+
+::: {.callout-tip collapse="true" title="BÁSICO - Crear factores a partir de variables tipo 'character' con `as.factor()`"}
+
+Podemos transformar una variable tipo **character** a factor con la función `as.factor()`
+```{r}
+# Transformar una variable tipo **character** a factor con la función `as.factor()`
+titanic$Embarked_fct <- as.factor(titanic$Embarked)
+
+```
+Esto modifica la estructura interna de la variable, y permite obtener más información cuando aplicamos funciones de resumen o gráficos.
+
+Por ejemplo, cuando aplicamos la función `summary()`, de la variable original sólo obtenemos un recuento de observaciones, mientras que de la nueva variable obtenemos cuántos individuos han embarcado en cada puerto.
+
+```{r}
+summary(titanic)
+```
+
+
+:::
+
+::: {.callout-tip collapse="true" title="BÁSICO - Crear factores manualmente con `factor()`"}
+A veces querremos tener más control sobre cómo se crea el factor, como cuando queremos asegurar que estén representadas un conjunto de categorías.
+
+Para ello, utilizaremos la función `factor()`, que toma los siguientes argumentos:
+
+|Argumento|Descripción|
+|-|---|
+|`x`|Variable tipo **character** que se quiere convertir a **factor**|
+|`levels`|Vector de categorías que queremos tener en el factor|
+|`labels`|(Opcional) Vector de etiquetas en el mismo orden que los niveles|
+|`ordered`|Permite indicar si los niveles guardan un orden entre sí|
+
+```{r}
+titanic$Embarked_fct2 <- factor(
+  x = titanic$Embarked_fct,
+  levels = c('S', 'C', 'Q'),
+  labels = c('Southampton', 'Cherbourg', 'Queenstown'),
+  ordered = FALSE
+)
+summary(titanic)
+```
+:::
+
+

@@ -1,0 +1,10 @@
+# Licencia del material {.unnumbered}
+
+Todo el material que tiene a su disposición es original, o ha sido adaptado de material distribuido con licencias de código abierto. Cuando el material es adaptación de otro, podrá utilizar las referencias para acceder al material original.
+
+El material de este taller es gratuito, y se distribuye bajo [Licencia GNU General Public versión 3](https://www.gnu.org/licenses/gpl-3.0.en.html). Puede redistribuirse, reutilizarse, modificarse y adaptarse, siempre que los materiales derivados mantengan la misma licencia GNU.
+
+![](imagen/gplv3.png)
+
+Si detecta alguna errata, o desea proponer alguna mejora a los materiales, puede hacer una contribución en el [Repositorio Gitlab del taller](https://gitlab.com/calidada4sms/publico/seca2023_talleR).
+

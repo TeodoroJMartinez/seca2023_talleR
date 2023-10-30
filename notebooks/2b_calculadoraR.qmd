@@ -1,0 +1,163 @@
+## R como calculadora {.unnumbered}
+
+Una vez instalado, podemos lanzar el software R mediante el consiguiente ejecutable. Esto mostrará un **terminal** (por defecto, con el símbolo `>`) que quedará esperando a que introduzcamos nuestras órdenes para ejecutarlas.
+
+### Ejecución directa de instrucciones en el terminal
+
+::: {.callout-tip collapse="true" title="BÁSICO - Ejecutar instrucciones aisladas (una línea) en el terminal "}
+Por ejemplo, si escribimos la expresión `2+2`en el terminal, y pulsamos **Intro**, obtendremos el resultado en una nueva línea.
+
+```{r}
+2 + 2
+```
+
+Vemos que aparece en primer lugar un número entre corchetes (`[1]`), y, a continuación, el resultado esperado (`4`). El primer número indica el orden del primer elemento mostrado, y el segundo el resultado de evaluar la expresión.
+
+:::
+
+```{r}
+
+```
+
+::: {.callout-tip collapse="true" title="BÁSICO - Ejecutar instrucciones seguidas (varias líneas) en el terminal"}
+
+Cada línea del código que nosotros escribimos es leída y evaluada secuencialmente, aunque las introduzcamos juntas como parte de un todo.
+
+Por ejemplo, si ejecutamos la siguiente serie de expresiones aritméticas en el terminal, 
+
+```
+2 + 1
+3 * 5
+8 * 4
+```
+
+automáticamente aparecerá el resultado detrás de cada una de ellas, como si se hubiesen escrito una a una.
+
+```{r}
+2 + 1
+3 * 5
+8 * 4
+```
+
+:::
+
+::: {.callout-tip collapse="true" title="BÁSICO - Asignar valores a una variable con `<-`"}
+Cuando ejecutamos las instrucciones en el terminal, el resultado que se muestra no se guarda en ningún sitio, y no se puede reutilizar en otras partes del código.
+
+Si necesitamos que el resultado de una instrucción quede guardada, podemos asignarlo a una variable, con el operador `<-` 
+
+```{r}
+x <- 2 + 2
+```
+Cuando asignamos un resultado a una variable, aparecerá en el entorno un nuevo objeto, que contendrá el valor asignado.
+
+![](imagen/asignacion_entorno.png)
+
+:::
+
+::: {.callout-tip collapse="true" title="BÁSICO - Recuperar valores asignados a una variable "}
+
+Para recuperar el resultado de la operación, simplemente invocamos el nombre del objeto.
+
+```{r}
+x
+```
+:::
+
+::: {.callout-tip collapse="true" title="BÁSICO - Operar con variables "}
+
+Una vez definida la variable, podemos operar con ella del mismo modo que haríamos con una constante, aplicarle funciones o incluso utilizarla para crear una segunda variable.
+
+```{r}
+x * 2
+x + 5
+sqrt(x)
+y <- 2 * log(x)
+y
+```
+:::
+
+## Catálogo de funciones básicas
+
+La instalación básica de R viene con las siguientes funciones básicas incorporadas:
+
++ Operaciones aritméticas básicas
++ Operadores booleanos (lógicos)
++ Constantes
++ Funciones matemáticas
++ Funciones básicas de matemática discreta (combinatoria y factoriales)
+
+::: {.callout-tip collapse="true" title="BÁSICO - Operaciones aritméticas básicas"}
+
+|Nombre|Descripción|Expresión R|
+|-|:-|:--:|
+|Unary plus|Identidad|`+x`|
+|Unary minus|Inverso aditivo|`-x`|
+|Suma|Adición|`x + y`|
+|Resta|Sustracción|`x - y`|
+|Multiplicación|Producto|`x * y`|
+|División|Cociente|`x / y`|
+|Cociente entero|Número de veces que el denominador está contenido en el numerador|`x %/% y`|
+|Resto de la división entera|Remanente de la división entera entre numerador y denominador|`x %% y`<br>`rem(x,y)`|
+|Potencia|Eleva `x` a la potencia `y`|`x^y`|
+
+:::
+
+::: {.callout-tip collapse="true" title="BÁSICO - Operaciones de comparación en R"}
+|Símbolo matemático|Descripción|Expresión R|
+|-|:-|:--:|
+|$>$|Mayor que|`x > y`|
+|$<$|Menor que|`x < y`|
+|$\equiv$|Identidad, equivalencia|`x == y`|
+|$\neq$|Desigualdad|`x != y`|
+|$\leq$|Menor o igual que|`x <= y`|
+|$\geq$|Mayor o igual que|`x >= y`|
+
+:::
+
+
+::: {.callout-tip collapse="true" title="BÁSICO - Operadores booleanos"}
+
+|Nombre|Descripción|Expresión R|
+|-|:-|:--:|
+|Negación (NOT)| No `x`|`!x`|
+|$x\cap y$   (AND)|Intersección entre `x` e `y`| `x & y`|
+|$x\cup y$   (OR) | Unión entre `x` e `y`| `x | y`|
+
+:::
+
+::: {.callout-tip collapse="true" title="BÁSICO - Constantes y conceptos"}
+
+|Constante |Descripción|R|
+|:-|:-|:--:|
+|$\pi$|Número $\pi$|`pi`|
+|$e$ |Número de Euler|`exp(1)`|
+|$\infty$|Infinito|`Inf`|
+|(*Not a Number*)|Indeterminación |`NaN`|
+|(*Not available*)|Valor desconocido |`NA`|
+
+:::
+
+::: {.callout-tip collapse="true" title="BÁSICO - Funciones matemáticas"}
+
+|Función|Descripción|R|
+|:-:|:-|:--:|
+|$\sqrt{x}$ |Raíz cuadrada de `x`|`sqrt(x)` |
+|$e^{x}$|Exponencial de `x`|`exp(x)`|
+|$\ln{x}$|Logaritmo natural de `x`|`log(x)`|
+|$\log _{10} x$|Logaritmo en base 10 de `x`|`log10(x)`|
+|$\log_{a} x$|Logaritmo en base `a` de `x`|`log(x, a)`|
+|$|x|$|Valor absoluto de `x`|`abs(x)`|
+
+:::
+
+
+
+::: {.callout-warning collapse="true" title="AVANZADO - Matemática discreta"}
+
+|Función|Descripción|R|
+|:-:|:-|:--:|
+|$x!$|`x` factorial|`factorial(x)`|
+|$\binom{n}{m}$|Combinatorio `n` sobre `m`|`choose(n,m)`|
+
+:::

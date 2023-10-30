@@ -1,0 +1,17 @@
+---
+toc: false
+---
+
+# ¡Bienvenidos! {.unnumbered}
+
+![](notebooks/imagen/seca2023.png)
+
+¡Bienvenidos al XXXIX Congreso nacional de la SECA, y XIV Congreso Regional de Calidad Asistencial de la SOMUCA!
+
+
+## Objetivos del taller
+
+- Conocer el proceso de análisis sistemático de datos, y las fases fundamentales del mismo
+- Conocer nociones básicas sobre el lenguaje de programación R y la plataforma de desarrollo R Studio
+- Explorar las posibilidades de aplicación de la metodología de análisis sistemático de datos, con ejemplos del ámbito de la salud
+- Conocer nociones básicas de calidad del dato, y su utilidad.

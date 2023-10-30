@@ -1,0 +1,134 @@
+# Flujo del código {.unnumbered}
+
+El flujo del código se puede controlar en R de tres maneras:
+
+|||
+|---|--|
+|`if (condición) {acción}`<br>`if (condición) {accion TRUE}else{acción FALSE}`|Ejecuta una acción u otra en función del valor de la condición|
+|`while (condición) {acción}`|Ejecuta la acción mientras hasta que no se cumpla la condición (indefinidamente)|
+|`for (i in secuencia) {acción}`|Ejecuta la acción iterando a lo largo de los elementos de una secuencia (duración acotada)|
+
+El uso de controladores del flujo del código es propio de *scripts* de R con un cierto nivel de complejidad.
+
+::: {.callout-warning collapse="true" title="AVANZADO - Flujo con `if(){}` e `if(){}else{}`"}
+
+Este método sigue la sintaxis:
+
++ `if (condición) {acción TRUE}`
++ `if (condición) {acción TRUE}else{acción FALSE}`
+
+Evalúa la condición marcada, y actúa en consecuencia:
+
+- Si la condición es `TRUE`, ejecuta `acción TRUE`
+- Si la condición es `FALSE`, ejecuta `acción FALSE`
+
+Como ejemplo, utilizaremos una variable que genera aleatoriamente la edad de un sujeto
+
+```{r}
+# Fijamos la semilla aleatoria
+set.seed(2023)
+
+# Generamos una edad aleatoria entre 1 y 100 años
+edad <- sample(
+  x = 1:100,
+  size = 1
+  )
+```
+
+Las acciones fuera del flujo condicional se ejecutan siempre
+```{r}
+# Las acciones fuera del flujo condicional se ejecutan siempre
+mensaje <- paste('La edad del sujeto es', edad)
+mensaje
+```
+
+Las acciones dentro de las llaves de un flujo condicional se ejecutan únicamente si se cumple la condición
+```{r}
+# Las acciones dentro de las llaves de un flujo condicional se ejecutan únicamente si se cumple la condición
+if (edad > 15) {
+  print('El sujeto es adulto')                 # Condición TRUE
+}else{
+  print('El sujeto está en edad pediátrica')   # Condición FALSE
+}
+```
+
+:::
+
+::: {.callout-warning collapse="true" title="AVANZADO - Flujo con `while(){}`"}
+Este método sigue la sintaxis:
+
++ `while(condición){acción TRUE}`
+
+Evalúa la condición marcada, y actúa en consecuencia:
+
+- Si la condición es `TRUE`, continúa ejecutando  `acción TRUE`
+- Si la condición es `FALSE`, cesa la ejecución, y sigue el *script*
+
+Como ejemplo, haremos un contador que cuente desde un número inicial hasta el que decidamos, de uno en uno. En primer lugar, indicaremos cuál es el número inicial y final que queremos utilizar
+
+```{r}
+# Fijamos el número inicial
+numero <- 1
+# Fijamos el número final
+numeroFinal <- 15
+
+```
+
+Ahora, ejecutaremos un bucle, que ejecuta las siguientes acciones en cada iteración:
+
+- Evalúa si `numero < numeroFinal`
+- Crea una variable `mensaje`, que incluye el valor de número
+- Imprime el contenido de la variable `mensaje`
+- Suma una unidad a la variable `número`
+
+```{r}
+# Bucle while - Se ejecuta mientras se cumple la condición
+while (numero < numeroFinal) {
+  mensaje <- paste('Esta es la ronda', numero)
+  print(mensaje)
+  numero <- numero + 1
+}
+```
+
+Cada iteración `numero` es un número mayor. En el momento en que la condición no se cumple, se ejecuta la acción que está fuera de las llaves `{}`
+
+```{r}
+print('Esta es la ronda final')
+```
+
+:::
+
+::: {.callout-warning collapse="true" title="AVANZADO - Flujo con `for (){}`"}
+ste método sigue la sintaxis:
+
++ `for(condición) {acción TRUE}`
+
+Evalúa la condición marcada, y actúa en consecuencia:
+
+- Por cada elemento indicado en la secuencia, ejecuta `acción TRUE`
+- Cuando no quedan elementos, cesa la ejecución, y sigue el *script*
+
+Lo que lo diferencia de los bucles `while()` es que, mientras que los primeros se ejecutan indefinidamente, los bucles `for()` se ejecutan recorriendo los elementos de un vector o una secuencia.
+
+En primer lugar, indicaremos cuál es el número inicial y final que queremos utilizar
+
+```{r}
+# Creamos el vector de secuencia 
+secuencia <- 1:14
+numero <- 1
+```
+
+Ahora, diseñamos el bucle `for()`:
+
+```{r}
+# Bucle for - se ejecuta una vez por cada unidad en 'numeroDeseado'
+for (i in secuencia) {
+  mensaje <- paste('Esta es la ronda', numero)
+  print(mensaje)
+  numero <- numero + 1
+}
+# Cuando se ha completado el bucle, se imprime el mensaje final
+print('Esta es la ronda final')
+```
+
+:::

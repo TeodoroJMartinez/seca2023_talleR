@@ -1,0 +1,109 @@
+# El lenguaje `R` {.unnumbered}
+
+[@noauthor_r_nodate]
+
+|||
+|-|-|
+|![](imagen/R_logo.svg_.png)| **R es un lenguaje de programación**, enfocado en el análisis estadístico.<br><br> Es **uno de los lenguajes de programación más utilizados en investigación científica**, siendo además muy popular en los campos de aprendizaje automático (machine learning), minería de datos, econometría, investigación biomédica, bioinformática y en el campo económico-financiero.<br><br>**R es parte del sistema GNU y se distribuye bajo la licencia GNU GPL**. Está disponible para los sistemas operativos Windows, Macintosh, Unix y GNU/Linux. |
+
+## Cómo usar R
+R es un tipo de lenguaje interpretado. Esto quiere decir que cada orden que se escriba será interpretada y ejecutada por R en cuanto pulsemos la tecla **Intro**.
+
+Podemos introducir estas órdenes (o instrucciones) básicamente de dos maneras:
+
+- De manera interactiva, escribiendo directamente las órdenes y ejecutándolas inmediatamente
+- De manera planificada, escribiendo con antelación un guion o secuencia de instrucciones (*script*), para posteriormente ejecutar dicha secuencia.
+
+
+### Limpieza y orden en la codificación de R
+
+Es muy importante ser ordenado cuando se trabaje en proyectos R project.
+
+Los tres principales elementos de orden son:
+
+- El trabajo por proyectos de R studio
+- Una estructura de directorios estandarizada
+- Limpieza de los productos intermedios generados durante el análisis.
+
+#### Proyectos de R Studio
+
+Los proyectos de R Studio son la forma más sencilla de ahorrarnos problemas cuando trabajamos con R, especialmente con proyectos complejos.
+
+::: {.callout-tip collapse="true" title="BÁSICO - Crear un projecto con R Studio"}
+
+Se crean desde la IDE de Rstudio
+![](imagen/rstudio_createProject01.png)
+Elegiremos la opción 'New directory'
+
+![](imagen/rstudio_createProject02.png)
+
+Escogemos la opción 'New Project'
+
+![](imagen/rstudio_createProject03.png)
+
+Por último, indicamos el nombre del proyecto y la ubicación en la que queremos guardarlo
+
+![](imagen/rstudio_createProject04.png)
+
+:::
+
+
+
+
+
+#### Estructura de directorios en R
+
+No hay un estándar para la estructura de directorios de R, pero sí algunas recomendaciones generales que suelen repetirse en muchas fuentes:
+
+- Los datos deben separarse de los scripts de código
+- Las salidas deben separarse del código que los generan
+- Los ficheros de configuración, si existen, deben separarse del resto del código
+
+::: {.callout-tip collapse="true" title="BÁSICO - Propuesta de estructura de directorios en proyectos R"}
+
+Puede consultarse una propuesta de estructura de directorios en [este artículo](https://www.r-bloggers.com/2018/08/structuring-r-projects/) [@chris2018]
+
+:::
+
+#### Limpieza durante la codificación de R
+
+R no utiliza ningún tipo de archivo temporal propio. Esto quiere decir que TODAS las operaciones (carga de datos, ejecución, limpieza, modelado...) se ejecutan y almacenan en la memoria activa del ordenador.
+
+Esto no suele suponer ningún problema, salvo cuando trabajamos con bases de datos grandes. Si no andamos con cuidado, podemos saturar la memoria del ordenador y provocar que el programa colapse.
+
+Para evitarlo, debemos mantener un entorno limpio, eliminando las variables temporales y liberando la memoria no utilizada cuando ejecutemos pasos intermedios de un proceso complicado.
+
+::: {.callout-warning collapse="true" title="AVANZADO - Limpieza y uso eficiente de memoria con R. Funciones `rm()` y `gc()`"}
+
+Para comprobar el efecto, podemos ver cómo se ocupa la memoria utilizando la sesión interactiva de R Studio
+
+Imaginemos que empezamos con esta situación:
+![](imagen/usoMemoria_01.png)
+
+Cargaremos en memoria un fichero de 10 millones de datos numéricos, obtenidos por muestreo aleatorio. Para ello, utilizaremos la función `sample()`, que explicaremos más tarde.
+
+```{r}
+x <- sample(1:1000000, 10000000, replace = TRUE)
+```
+Cuando ejecutamos la instrucción, suceden dos cosas:
+
++ aparece un nuevo objeto en el panel superior derecho, denominado x
++ se modifica la cantidad de memoria utilizada
+
+![](imagen/usoMemoria_02.png)
+Podemos eliminar el objeto creado con la función `rm()`, indicando el nombre del objeto que queremos eliminar entre paréntesis. El resultado será que desaparece el objeto creado, pero la memoria seguirá estando ocupada.
+
+```{r}
+rm(x)
+```
+
+Para liberar la memoria que está utilizándose inapropiadamente, utilizaremos la función `gc()`
+
+```{r}
+gc()
+```
+![](imagen/usoMemoria_04.png)
+
+En los scripts de este taller, se utilizarán frecuentemente las funciones `rm()` y `gc()` para mantener un uso eficiente de la memoria, y un entorno de trabajo limpio.
+
+:::

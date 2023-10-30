@@ -1,0 +1,69 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Análisis sistemático de datos con R. Indicadores de calidad del dato"
+  subtitle: "XXXIX Congreso SECA. XIV Congreso SOMUCA - Murcia (25-27 Octubre 2023)"
+  license: BY-NC-SA
+  editor: source
+  author:
+    - name: Jorge López Díaz
+      affiliation: Área I - Servicio Murciano de Salud
+      roles: [conceptualization,Methodology, Software, Supervision, Validation, Visualization, Writing – original draft, Writing – review & editing]
+    - name: Teodoro José Martínez Arán
+      affiliation: Área IV - Servicio Murciano de Salud
+      roles: [conceptualization, Data curation, Formal Analysis, Methodology, Software, Supervision, Validation, Visualization, Writing – original draft, Writing – review & editing]
+  date: "2023-10-25"
+  search: true
+  repo-url: https://gitlab.com/calidada4sms/publico/seca2023_tallerR
+  downloads: [pdf, epub]
+  sharing: [twitter, facebook, linkedin]
+  language: ./notebooks/config/languageLabels_es.yml
+  chapters:
+    - index.qmd
+    - part: 'BLOQUE 0 - Descripción del taller'
+      chapters:
+        - ./notebooks/0a_contenidoTaller.qmd
+        - ./notebooks/0b_licenciaMaterial.qmd
+        - ./notebooks/0c_sinMiedoCodigo.qmd
+    - part: 'BLOQUE 1 - Instalación'
+      chapters:
+        - ./notebooks/1a_preparacionSistema.qmd
+        - ./notebooks/1b_instalacionR.qmd
+        - ./notebooks/1c_instalacionRstudio.qmd
+        - ./notebooks/1d_instalacionPaquetes.qmd
+        - ./notebooks/1e_descargaMaterial.qmd
+    - part: 'BLOQUE 2 - Fundamentos de R'
+      chapters:
+        - ./notebooks/2a_R.qmd
+        - ./notebooks/2b_calculadoraR.qmd
+        - ./notebooks/2c_scripts.qmd
+        - ./notebooks/2d_tiposDatos.qmd
+        - ./notebooks/2e_vectores.qmd
+        - ./notebooks/2f_cambioTipoVariable.qmd
+        - ./notebooks/2g_flujo.qmd
+        - ./notebooks/2h_funciones.qmd
+        - ./notebooks/2i_dataframes.qmd
+        - ./notebooks/2j_factores.qmd
+        - ./notebooks/2k_graficos.qmd
+    - part: 'BLOQUE 3 - Casos de uso'
+      chapters:
+        - ./notebooks/3a_piramideDemografica.qmd
+    - ./notebooks/ejercicios.qmd
+    - ./references.qmd
+    - part: 'Anexos'
+      chapters:
+        - ./notebooks/dataQuality.qmd
+        - ./notebooks/anexo01_paquetes.qmd
+        - ./notebooks/anexo02_funciones.qmd
+        - ./notebooks/anexo03_baseDatosPiramideDemografica.qmd
+comments:
+  hypothesis: true
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt

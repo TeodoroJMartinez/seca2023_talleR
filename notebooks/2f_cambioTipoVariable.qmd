@@ -1,0 +1,61 @@
+# Cambio del Tipo de Variable {.unnumbered}
+
+Cada tipo de variable tiene una función específica para convertir una variable a su propia clase:
+
+|Paquete|Función|Acciones|
+|-|-|-|
+|Base|`as.logical()`|Conversión de una variable al tipo **logical**|
+||`as.integer()`|Conversión de una variable al tipo **integer**|
+||`as.numeric()`|Conversión de una variable al tipo **numeric**|
+||`as.character()`|Conversión de una variable al tipo **character**|
+
+
+```{r}
+# Variable original
+a <- c(1, 2.4, -3.839, pi)
+a
+
+# Conversión a tipo character
+a_character <- as.character(a)
+class(a_character)
+a
+```
+
+
+Existe una cierta jerarquía entre los distintos tipos de variable, de modo que una variable se puede convertir en todos los tipos que tiene por debajo, pero en la mayoría de las ocasiones no en los que tiene por encima.
+
+Es importante que se tenga en cuenta que cuando se convierte información entre tipos de variables se puede degradar la calidad de la información
+
+```{r}
+# Variable original
+a <- c(1, -2.6, 3.7, 4.8)
+class(a)
+a
+
+# Conversión a una variable de menor especificidad (hacia abajo)
+b <- as.character(a)
+class(b)
+b   # Se conserva el texto original
+
+# Conversión a variable de mayor especificidad (hacia arriba)
+## Opción 1 - integer
+c <- as.integer(a)
+class(c)
+c   # El vector no se redondea, sino que se elimina la parte decimal
+
+## Opción 2 - logical
+d <- as.logical(a)
+class(d)
+d    # Todos los valores son TRUE, independientemente de su valor de origen
+```
+
+Cuando la conversión es imposible, los elementos se sustituyen por `NA` (*not available*, valor faltante)
+
+```{r}
+# Conversión imposible
+a <- c('A', 'B', 'C')
+b <- as.numeric(a)
+b
+
+```
+

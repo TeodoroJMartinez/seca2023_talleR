@@ -1,0 +1,40 @@
+## Paso 1 - Instalar R {.unnumbered}
+
+|                             |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ![](imagen/R_logo.svg_.png) | Para descargar R, seguiremos los siguientes pasos:<br>1.- Ir a [*CRAN - Comprehensive R Archive Network*](https://cloud.r-project.org/).<br>2.- Descargar la versión correspondiente a nuestro sistema operativo:<br> - [Windows](https://cloud.r-project.org/bin/windows/base/)<br> - [macOS (chip Intel)](https://cloud.r-project.org/bin/macosx/big-sur-arm64/base/R-4.3.1-arm64.pkg) o [macOS (chip M1)](https://cloud.r-project.org/bin/macosx/big-sur-arm64/)<br> - GNU-linux ([debian](https://cloud.r-project.org/bin/linux/debian/), [Fedora/RedHat](https://cloud.r-project.org/bin/linux/fedora/), o [Ubuntu](https://cloud.r-project.org/bin/linux/ubuntu))<br>3.- Seguir las instrucciones de instalación de la página para nuestro sistema operativo |
+
+::: {.callout-tip collapse="true" title="BÁSICO - Cómo actualizar R en sistemas Windows con `installr::updater()`"}
+El paquete base de R suele tener una actualización mayor una vez al año, y 2-3 actualizaciones menores cada año. Es conveniente mantener actualizada la versión, puesto que continuamente se añaden nuevas funcionalidades y se corrigen errores.
+
+El método para actualizarlo dependerá de nuestro sistema operativo:
+
+-   Los sistemas UNIX (linux, MacOS) actualizarán R como un paquete más
+-   Los sistemas windows pueden actualizarse utilizando la funcion `updateR()` del paquete **installr**
+
+```{r}
+#| eval: false
+
+installr::updater()
+```
+:::
+
+::: {.callout-important collapse="true" title="EXPERTO - Usar un fichero `config.R` para definir la configuración global con `source()`"}
+### Configuración global de R
+
+Vamos a modificar algunos de los valores de configuración de R para que queden fijados para todos nuestros análisis:
+
+-   Definir los paquetes que se cargan por defecto al iniciar R
+-   Modificar el prompt `>` de la terminal para que indique la versión de R
+-   Evitar que los números grandes se representen en notación científica
+
+Estos valores están recogidos en el fichero **config.R**, ubicado en la carpeta **notebooks -\> config**.
+
+Los cargaremos con la función `source()`, indicándole la ruta del archivo mediante la función `here::here()`.
+
+```{r}
+#| output: false
+
+source(here::here('notebooks', 'config', 'config.R'))
+```
+:::

@@ -1,0 +1,138 @@
+## Paso 2 - Instalación de R Studio {.unnumbered}
+
+![](imagen/RStudio_Logo.png)
+
+RStudio es un Entorno de Desarrollo Integrado (*IDE*, en su acrónimo inglés), que permite al usuario interactuar con el programa R de una manera más amable. Aunque no es imprescindible para ejecutar R, sí es muy recomendable, porque facilita las tareas de edición y mantenimiento del código.
+
+La empresa que desarrolla Rstudio se denomina POSIT, y ofrece tanto versiones gratuitas como otras de pago. Nosotros utilizaremos la versión gratuita, denominada **RStudio Desktop**.
+
+Para instalar Rstudio Desktop, debemos descargar la última versión disponible para nuestro sistema operativo desde la [página de descargas de POSIT](https://posit.co/download/rstudio-desktop/), y seguir las instrucciones.
+
+### (OPCIONAL) - Configurar R Studio con el estilo utilizado en el taller
+
+Con el paso previo, R Studio funcionará correctamente. 
+
+Si quiere una configuración similar a la que se ha explicado en el taller, puede establecer las opciones de configuración en el menú `Tools > Global Options`, y seguir las instrucciones incluidas en el siguiente desplegable
+
+::: {.callout-tip collapse="true" title="BÁSICO - Configuración de Rstudio como la explicada en el taller"}
+
+### Pestaña general 
+#### Basic
+Debemos cambiar:
+
+- El directorio por defecto para nuestros proyectos
+- Las opciones de recuperar el historial
+- (OPCIONAL) - El idioma de la interfaz de usuario (menús)
+
+![](imagen/rstudio_configuracion01.png)
+
+#### Advanced
+
+Cambiar la opción para que se muestre la ruta completa en el título de los proyectos.
+
+![](imagen/rstudio_configuracion02.png)
+
+### Pestaña Code
+
+En esencia, la mayoría de los cambios están orientados a:
+
++ Activar todas las opciones que proporcionan ayuda para la detección de errores, 
++ Activar el uso de la *pipe* nativa, y 
++ Activar las guías visuales para facilitar la edición
+
+#### Editing
+
+![](imagen/rstudio_configuracion03.png)
+
+#### Display
+
+![](imagen/rstudio_configuracion04.png)
+
+#### Saving
+
+![](imagen/rstudio_configuracion05.png)
+
+#### Completion
+
+![](imagen/rstudio_configuracion06.png)
+
+#### Diagnostics
+
+![](imagen/rstudio_configuracion07.png)
+
+### Pestaña Appearance
+Aquí elegimos el estilo de las ventanas. Si bien esto es un aspecto muy personal, se recomienda, en general:
+
++ Utilizar las modalidades 'oscuras' y no utilizar las de alto contraste, para evitar la fatiga visual en sesiones prolongadas
++ Adaptar el tamaño de letra de la ventana de edición y de ayuda a nuestras necesidades (reconozcámoslo: ya no somos críos
+
+![](imagen/rstudio_configuracion09.png)   
+
+### Pestaña R MarkDown
+
+Esta pestaña controla cómo vamos a gestionar nuestros informes R MarkDown y Quarto. 
+#### Basic
+
+Uno de los cambios más importantes que debemos hacer es cambiar la opción 'Evaluar Chunks en'. Debe estar en 'Proyecto'
+
+![](imagen/rstudio_configuracion10.png)
+
+#### Visual
+
+![](imagen/rstudio_configuracion11.png)
+
+### Pestaña Python
+Sólo necesario si vamos a utilizar R Studio con dos lenguajes a la vez (Python y R)
+
+![](imagen/rstudio_configuracion12.png)
+
+### Pestaña Sweave
+Controla cómo vamos a generar PDF y otros formatos.
+
+![](imagen/rstudio_configuracion13.png)
+
+### Pestaña Spelling
+
+A diferencia de la opción de idioma que vimos en la pestaña `General>Advanced`, en esta opción definimos qué idioma se utilizará para revisión ortográfica del texto, y otros elementos de formato como la configuración de decimales.
+
+Debe descargarse el diccionario español, que no se instala por defecto.
+Para hacerlo, seleccionaremos 'Otros idiomas', y se descargarán el resto de opciones. 
+
+Rstudio se puede configurar en Español o en Catalán. El resto de lenguas cooficiales en España no tiene diccionario disponible a fecha actual.
+
+![](imagen/rstudio_configuracion14.png)
+
+:::
+
+### (OPCIONAL) - Instalación de otras IDE de usuario. **R Commander**
+
+RStudio no es la única IDE que permite ejecutar R, aunque sí una de las más extendidas. Puede ejecutarse código R desde otros entornos integrados de programación, como **VSCode** o en entornos **Colab**.
+
+Si estamos interesados únicamente en el aspecto estadístico de R y en la interacción mediante menús, existe una IDE alternativa que nos puede interesar, el paquete **R Commander**.
+
+**R Comander** facilita la realización de análisis estadísticos de manera interactiva y puede ser suficiente para algunos usuarios sin uso intensivo de código. Su interfaz recuerda a algunos programas comerciales, como SPSS(R) o Minitab(R).
+
+::: {.callout-tip collapse="true" title="BÁSICO - Interfaz de usuario para estadística básica con el paquete 'R-Commander'"}
+
+Puede instalarse directamente desde el propio R, como un paquete más, denominado **Rcmdr**, mediante la siguiente instrucción.
+
+```{r}
+#| eval: false
+
+## Opcional - Instalación del paquete Rcmdr
+install.packages('Rcmdr')
+```
+
+Para activar el entorno interactivo, utilizaremos la función `library()`
+
+```{r}
+#| eval: false
+
+## Carga del paquete Rcmdr
+library(Rcmdr)
+```
+
+En su primera ejecución, el paquete **Rcmdr** nos indicará que debe instalar algunos paquetes adicionales para funcionar con todo su potencial. Si deseamos usar esta herramienta, es aconsejable permitirlo.
+
+**R Commander** puede ser una opción si vamos a interactuar poco mediante código con R, o si nos vamos a limitar a reproducir código elaborado por otros analistas. Sin embargo, dado que carece de las ayudas de edición de código que aporta RStudio, no es una buena opción si se va a realizar un uso intensivo del editor de código. En este caso, probablemente merezca la pena instalar Rstudio.
+:::

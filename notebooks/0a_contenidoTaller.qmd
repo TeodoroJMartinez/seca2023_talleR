@@ -1,0 +1,132 @@
+# Contenido del taller {.unnumbered}
+
+## Descripción del material
+
+Este material ha sido diseñado para el Taller '*Análisis sistemático de datos con R. Indicadores de calidad del dato*', de 4 horas de duración, impartido en Murcia, el 25 Octubre de 2023, durante el [XXXIX Congreso SECA y XIV Congreso SOMUCA](https://calidadasistencial.es/congreso-seca-2023/).
+
+Recoge los contenidos tratados en el taller, y el código de todos los ejemplos que se han expuesto en el mismo. 
+
+El taller se han diseñado pensando en su uso por profesionales relacionados con la asistencia sanitaria. Por este motivo, la mayor parte de los ejemplos y casos de uso están relacionados con el ámbito de la salud. Sin embargo, los contenidos relacionados con el proceso analítico son aplicables a cualquier otro campo.
+
+## Contenido del material
+
+El material está organizado en los siguientes bloques:
+
+|Bloque|Descripción|
+|-|-|
+|Bloque 0 - Descripción del taller|Visión general del material y el curso|
+|Bloque 1 - Fundamentos de R y R Studio|Nociones elementales para comenzar a trabajar con R y R Studio|
+|Bloque 2 - Casos de uso|Incluye problemas de la vida real, y un ejemplo de cómo podríamos usar la metodología sistemática de análisis de datos para responder a las cuestiones que se nos plantean|
+|Bloque 3 - Proceso de análisis sistemático de datos|Detalle de cada una de las fases del análisis de datos, y una explicación de las funciones utilizadas en los casos de uso|
+|Anexos - Material complementario|Listado de las funciones y paquetes utilizados, así como algún detalles específico sobre cómo se han construido algunos elementos expuestos en el taller|
+
+
+## Código incluido en el material
+
+### Bloques de código
+
+A lo largo del material encontrará pequeños bloques rectangulares, sombreados en gris. 
+En el argot de programación, estos bloques se denominan *chunks*.
+
+#### Contenido de los bloques de código
+En estos recuadros, encontrará dos tipos de contenido:
+
++ **Comentarios**: 
+  + Son líneas de texto libre que incluyen una almohadilla (`#`). 
+  + No se ejecutan y pueden incluir cualquier tipo de texto o símbolo.
+  + Pueden incluirse a continuación del código
++ **Código de R**. 
+  + Son líneas de texto que siguen la sintaxis de R. 
+  + Si las visualizamos en RStudio o en formato de salida (`.pdf`, `.html`, `.doc`), habitualmente vienen formateadas con colores. 
+  + Deben respetar la sintaxis de R, porque son evaluadas.
+  
+
+```{r}
+# Esto es un ejemplo de Comentario
+
+## Generar 1000 números aleatorios extraídos de una distribución normal
+x <- rnorm(1000) 
+
+## Dibujar el histograma de los números obtenidos
+hist(x)
+```
+
+#### Uso de los comentarios
+Dentro de una *chunk*, el código escrito tras un comentario (#) no se ejecutará. Sí se puede poner un comentario después de código.
+
+```{r}
+z <- rexp(1000)
+hist(z) # Esta línea funciona. Código seguido de comentario.
+# Esta línea no funciona. Comentario seguido de código.  hist(z)
+```
+
+#### Uso de mayúsculas y minúsculas en R
+
+R distingue mayúsculas y minúsculas. Debemos ser muy cuidadosos a la hora de nombrar variables y escribir funciones
+
+La ejecución del siguiente ejemplo está desactivada por defecto, para evitar que produzca errores de ejecución. Corte y pegue el código en su terminal y observe el resultado.
+
+```{r}
+#| eval: false
+
+# Generamos 1000 números aleatorios siguiendo una distribución uniforme
+a <- runif(1000)
+
+# Generamos el histograma de la variable generada
+hist(a) # Código correcto
+Hist(a) # Código incorrecto
+hist(A) # Código incorrecto
+```
+
+#### Copia del código de ejemplo incluido en el material
+
+El código de los ejemplos se puede cortar y pegar directamente en un *script* de R.
+
+Si situamos el ratón sobre una *chunk*, aparecerá un pequeño icono a la derecha de la misma. Al hacer click sobre él con el ratón, se copiará todo el código del recuadro en el portapapeles del sistema operativo.
+
+![](imagen/chunCode_clipboard.png)
+
+Podemos pegarlo directamente en R con `Ctrl+V`
+
+#### Identificación del nivel de dificultad del código del material
+
+Este material incluye código muy sencillo, y alguno más elaborado. Se ha clasificado en cuatro niveles de dificultad:
+
+::: {.callout-note title="EJEMPLO"}
+Incluye demostraciones sencillas que muestran el funcionamiento de la funcionalidad que se acaba de explicar
+:::
+
+::: {.callout-tip title="BÁSICO"}
+Incluye código fácil, con paquetes de uso común y funciones sencillas, para tareas simples
+:::
+
+::: {.callout-warning title="AVANZADO"}
+Incluye código avanzado, que requiere secuencias de código o combinación de funciones
+:::
+
+::: {.callout-important title="EXPERTO"}
+Incluye código de mayor complejidad, con paquetes especializados, para las tareas más avanzadas
+:::
+
+#### Código colapsado / expandido
+
+Para facilitar la navegación por el material, la mayoría del código está colapsado. Por ejemplo:
+
+![](imagen/chunkCode_collapsed.png)
+
+Puede mostrarse su contenido pulsando el símbolo `>` que hay a la derecha del recuadro.
+
+![](imagen/chunkCode_expanded.png)
+
+## Conjuntos de datos utilizados en el taller
+
+### Metodología de fabricación
+
+Los conjuntos de datos del taller se han creado utilizando datos reales combinados con otros ficticios:
+
+-   Datos reales. Datos de referencia de libre acceso, relacionados con el sistema sanitario y la población de referencia, disponibles en webs públicas:
+    -   Catálogos de centros sanitarios, como el [Catálogo Nacional de Hospitales](https://www.sanidad.gob.es/ciudadanos/prestaciones/centrosServiciosSNS/hospitales/docs/CNH_2023.xlsx) o el [Catálogo de Centros de Atención Primaria del SNS](https://www.sanidad.gob.es/estadEstudios/estadisticas/docs/siap/2023_C_Catal_Centros_AP.xlsx)
+    -   Clasificaciones de enfermedades, como la [CIE-10-ES Diagnósticos](https://eciemaps.mscbs.gob.es/ecieMaps/download?name=CIE10ES_2022_Tabla_Referencia_Diagnosticos_08_03_2022_3570600928954572812.xlsx)
+    -   Datos públicos del Instituto Nacional de estadística, como los [Apellidos con más de 20 individuos en el padrón continuo de 2022](https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177009&menu=resultados&idp=1254734710990#!tabs-1254736195454)
+-   Datos ficticios. Todos los datos que simulan pacientes individuales, asistencias, diagnósticos o prescripciones son ficticios. Se han construido tablas de datos mediante procesos pseudoaleatorios. Por este motivo, es posible que haya datos poco compatibles con situaciones reales en algunas de estas tablas.
+

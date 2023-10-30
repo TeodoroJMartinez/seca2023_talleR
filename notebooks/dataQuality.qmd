@@ -1,0 +1,40 @@
+# Calidad del análisis de datos {.unnumbered}
+
+## Dimensiones de la calidad del dato
+
+No existe un estándar único para definir las dimensiones de calidad del dato. Por este motivo, pueden encontrarse múltiples definiciones y dimensiones, según la fuente que se consulte.
+
+::: {.callout-note collapse="true" title="CURIOSIDAD - Las ¡¡60!! dimensiones de la calidad del dato"}
+Como curiosidad, puede consultarse el [informe *How to Select the Right Dimensions of Data Quality*](https://dama-nl.org/wp-content/uploads/2020/11/How-to-Select-the-Right-Dimensions-of-Data-Quality-v1.1-d.d.-14-Nov-2020.pdf) de DAMA international, que recoje ¡¡¡60!!! dimensiones de calidad del dato, y sus definiciones estandarizadas.
+:::
+
+Existe una [Especificación UNE 0079 de Gestión de la calidad del dato](https://www.une.org/encuentra-tu-norma/busca-tu-norma/norma?c=N0071118)
+
+En este taller utilizaremos las seis dimensiones básicas que propone por la *Data Management Association International* (DAMA)
+
+| Dimensión      | Traducción propuesta        | Definición                                                                                                                                                                                                                       | Indicadores                                                                                 | Ejemplo de mala calidad del dato                                                                       |
+|----------------|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
+| *Accuracy*     | Corrección                  | Grado de cercanía entre los datos registrados y los valores reales                                                                                                                                                               | Porcentaje o número de valores incorrectos                                                  | Un apellido 'Martínez' es registrado como 'Martín'                                                     |
+| *Completeness* | Cobertura | **De registros o unidades** - Grado en el que todos los registros REQUERIDOS de un conjunto de datos están presentes                                                                                                             | Porcentaje o número de registros requeridos que están presentes                             | No existen registros de todos los pacientes adscritos a un cupo (faltan individuos completos)|
+|||**De variables** - Grado en que las variables NECESARIAS de un conjunto de datos están disponibles|Porcentaje o número de variables requeridas que están disponibles|No hay datos sobre el hábito tabáquico en una base de datos de embarazadas|
+|||**De datos** - Grado en que todos los valores requeridos de los datos están presentes para cada registro                                                                                                                         | Porcentaje de posibles valores de datos que están presentes                                 | No se rellenan algunos campos requerido del checklist quirúrgico (valores faltantes)|
+| *Consistency*  | Consistencia, plausibilidad | Grado en el que los valores de los datos de dos conjuntos de atributos (dentro de un registro, dentro de un conjunto de datos, entre conjuntos de datos, en un registro en diferentes momentos temporales) cumplen con una regla | Porcentaje de inconsistencias                                                               | Paciente domiciliado en Murcia con EAP ubicado en Navarra                                              |
+| *Timeleness*   | Proceso - Puntualidad     | Grado en que es apropiado el periodo entre el momento en que ocurre el valor real y la disponibilidad del dato                                                                                                                   | Porcentaje de veces en que un conjunto de datos no está disponible con la puntualidad esperada |  Los datos de las camas disponibles de la unidad quirúrgica se comunican a las 15 horas|
+|*Timeliness - Freshness*|Resultado - Actualidad|Grado en que los datos reflejan situaciones que han ocurrido recientemente|Valoración sobre la actualidad del registro (actualizado, desactualizado, obsoleto)|Los últimos datos disponibles sobre el programa Código ICTUS son de hace cuatro años|
+| *Uniqueness*   | Unicidad                    | Grado en que los registros ocurren una única vez en el conjunto de datos                                                                                                                                                         | Porcentaje de datos duplicados en un conjunto de datos                                      | Un paciente tiene dos números de historia, una asistencia a consultas externas es registrada dos veces |
+| *Validity*     | Validez                     | Grado en que los valores de datos cumplen con las reglas                                                                                                                                                                         | Porcentaje de valores de datos que no cumplen con las reglas                                | Registro de un país que no existe en la lista de países, registro de un DNI sin la letra               |
+
+## Métricas de calidad del dato en el proceso de análisis de datos
+
+|      Fase      | *Accuracy* | *Completeness* | *Consistency* | *Timeleness* | *Uniqueness* | *Validity* |
+|:--------------:|:----------:|:--------------:|:-------------:|:------------:|:------------:|:----------:|
+|    Ingesta     |            |       x        |               |      x       |              |            |
+|    Limpieza    |            |       x        |               |              |      x       |     x      |
+|      EDA       |     x      |       x        |       x       |      x       |      x       |     x      |
+| Transformación |     x      |       x        |       x       |              |      x       |     x      |
+|    Análisis    |            |       x        |       x       |              |      x       |     x      |
+|    Gráficos    |     x      |       x        |       x       |              |      x       |     x      |
+|    Informes    |     x      |       x        |       x       |      x       |      x       |     x      |
+
+El análisis de la calidad del dato es un proceso complejo, que requiere conocimientos avanzados de R fuera del alcance de este taller. 
+
